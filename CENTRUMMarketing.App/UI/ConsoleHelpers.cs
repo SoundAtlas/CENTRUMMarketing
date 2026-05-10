@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CENTRUMMarketing.App.UI
+﻿namespace CENTRUMMarketing.App.UI
 {
-    internal class ConsoleHelpers
+    public class ConsoleHelpers
     {
     }
 }

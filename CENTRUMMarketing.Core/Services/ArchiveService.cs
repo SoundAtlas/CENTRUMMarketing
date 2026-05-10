@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CENTRUMMarketing.Core.Services
+﻿namespace CENTRUMMarketing.Core.Services
 {
-    internal class ArchiveService
+    public class ArchiveService
     {
     }
 }
