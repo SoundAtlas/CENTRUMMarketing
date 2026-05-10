@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CENTRUMMarketing.App/CENTRUMMarketing.App.csproj" />
+  <Project Path="CENTRUMMarketing.Core/CENTRUMMarketing.Core.csproj" />
+</Solution>
