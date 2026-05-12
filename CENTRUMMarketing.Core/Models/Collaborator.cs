@@ -1,17 +1,15 @@
 ﻿namespace CENTRUMMarketing.Core.Models
 {
-    public class Collaborator
+    public class Collaborator : BaseEntity
     {
-        public int CollaboratorId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Role { get; set; }
 
         public Collaborator(
-            int collaboratorId, string name, string email, string phone, string role)
+            int id, string name, string email, string phone, string role) : base(id)
         {
-            CollaboratorId = collaboratorId;
             Name = name;
             Email = email;
             Phone = phone;
