@@ -1,5 +1,5 @@
 ﻿using CENTRUMMarketing.App.UI;
-using CENTRUMMarketing.Core.Enums;
+using TaskStatus = CENTRUMMarketing.Core.Enums.TaskStatus;
 
 namespace CENTRUMMarketing.App.Menus
 {
@@ -19,9 +19,7 @@ namespace CENTRUMMarketing.App.Menus
 
             while (running)
             {
-                int? choice = ConsoleHelpers.Navigation(
-                    "CENTRUM SEARCH MENU",
-                    options);
+                int? choice = ConsoleHelpers.Navigation("CENTRUM SEARCH MENU", options);
 
                 switch (choice)
                 {
@@ -62,6 +60,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine($"\nSearching for customers matching: {searchTerm}");
 
+            // TODO:
             // Call CustomerService
             // Include archived customers
             // Print matching customers with CustomerPrinter
@@ -72,10 +71,57 @@ namespace CENTRUMMarketing.App.Menus
 
         public void ShowTasksByStatus()
         {
-            // do something related to looking up tasks by status
+            Console.Clear();
+            Console.WriteLine("VIEW TASKS BY STATUS\n\n");
 
+            string[] statusOptions =
+            {
+                "To Do",
+                "In Progress",
+                "Waiting for Client",
+                "Completed",
+                "Back"
+            };
 
-            // choose status from enum: ToDo, InProgress, WaitingClient, Completed
+            int? choice = ConsoleHelpers.Navigation("SELECT TASK STATUS", statusOptions);
+
+            if (choice == null || choice == 4)
+                return;
+
+            TaskStatus selectedStatus;
+
+            switch (choice)
+            {
+                case 0:
+                    selectedStatus = TaskStatus.ToDo;
+                    break;
+
+                case 1:
+                    selectedStatus = TaskStatus.InProgress;
+                    break;
+
+                case 2:
+                    selectedStatus = TaskStatus.WaitingClient;
+                    break;
+
+                case 3:
+                    selectedStatus = TaskStatus.Completed;
+                    break;
+
+                default:
+                    return;
+            }
+
+            Console.Clear();
+            Console.WriteLine($"TASKS WITH STATUS: {selectedStatus}\n\n");
+
+            // TODO:
+            // Call TaskService to get tasks with selectedStatus
+            // Get tasks matching selectedStatus
+            // Print matching tasks with TaskPrinter
+
+            Console.WriteLine("\nPress a key to continue...");
+            Console.ReadKey();
         }
 
         public void ShowArchivedCustomers()
