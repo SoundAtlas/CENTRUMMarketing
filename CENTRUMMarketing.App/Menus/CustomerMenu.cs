@@ -1,4 +1,5 @@
-﻿using CENTRUMMarketing.Core.Enums;
+﻿using CENTRUMMarketing.App.UI;
+using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
 
@@ -16,41 +17,34 @@ namespace CENTRUMMarketing.App.Menus
 
         public void ShowCustomerMenu()
         {
+            string[] options =
+            {
+                "Add Customer",
+                "View All Customers",
+                "Return"
+            };
+
             bool inCustomerMenu = true;
 
             while (inCustomerMenu)
             {
-                Console.Clear();
-
-                Console.WriteLine("=======================================");
-                Console.WriteLine("          CUSTOMER MANAGEMENT          ");
-                Console.WriteLine("=======================================");
-                Console.WriteLine("1. Add Customer");
-                Console.WriteLine("2. View All Customers");
-                Console.WriteLine("0. Return");
-                Console.WriteLine("=======================================");
-                Console.WriteLine("Choose an option: ");
-
-                string choice = Console.ReadLine();
-
+                int? choice = ConsoleHelpers.Navigation("CUSTOMER MANAGEMENT", options);
 
                 switch (choice)
                 {
-                    case "1":
+                    case 0:
                         AddCustomerFlow();
                         break;
-                    case "2":
+
+                    case 1:
                         ViewCustomersFlow();
                         break;
-                    case "0":
+
+                    case 2:
+                    case null:
                         inCustomerMenu = false;
                         break;
-                    default:
-                        Console.WriteLine("Invalid choice.");
-                        Console.ReadKey();
-                        break;
                 }
-
             }
         }
 

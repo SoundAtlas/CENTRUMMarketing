@@ -1,4 +1,5 @@
-﻿using CENTRUMMarketing.Core.Services;
+﻿using CENTRUMMarketing.App.UI;
+using CENTRUMMarketing.Core.Services;
 
 namespace CENTRUMMarketing.App.Menus
 {
@@ -15,35 +16,29 @@ namespace CENTRUMMarketing.App.Menus
 
         public void ShowMainMenu()
         {
+            string[] options =
+            {
+                "Customer Management",
+                "Exit"
+            };
+
             bool running = true;
 
             while (running)
             {
-                Console.Clear();
-
-                Console.WriteLine("=======================================");
-                Console.WriteLine("          CENTRUM MAIN MENU");
-                Console.WriteLine("=======================================");
-                Console.WriteLine("1. Customer Management");
-                Console.WriteLine("0. Exit");
-                Console.WriteLine("=======================================");
-                Console.Write("Choose an option: ");
-
-                string choice = Console.ReadLine();
+                int? choice = ConsoleHelpers.Navigation(
+                    "CENTRUM MAIN MENU",
+                    options);
 
                 switch (choice)
                 {
-                    case "1":
+                    case 0:
                         _customerMenu.ShowCustomerMenu();
                         break;
 
-                    case "0":
+                    case 1:
+                    case null:
                         running = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Invalid choice.");
-                        Console.ReadKey();
                         break;
                 }
             }
