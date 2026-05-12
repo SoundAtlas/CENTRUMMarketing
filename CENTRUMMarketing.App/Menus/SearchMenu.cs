@@ -1,10 +1,20 @@
 ﻿using CENTRUMMarketing.App.UI;
+using CENTRUMMarketing.Core.Services;
 using TaskStatus = CENTRUMMarketing.Core.Enums.TaskStatus;
 
 namespace CENTRUMMarketing.App.Menus
 {
     public class SearchMenu
     {
+        private readonly CustomerService _customerService;
+        private readonly CustomerPrinter _customerPrinter;
+
+        public SearchMenu(CustomerService customerService)
+        {
+            _customerService = customerService;
+            _customerPrinter = new CustomerPrinter();
+        }
+
         public void ShowSearchMenu()
         {
             string[] options =
@@ -54,17 +64,19 @@ namespace CENTRUMMarketing.App.Menus
 
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                Console.WriteLine("\nSearch text cannot be empty.");
+                Console.WriteLine();
+                Console.WriteLine("Search text cannot be empty.");
                 Pause();
                 return;
             }
 
-            Console.WriteLine($"\nSearching for customers matching: {searchTerm}");
+            Console.WriteLine();
+            Console.WriteLine($"Searching for customers matching: {searchTerm}");
+            Console.WriteLine();
 
-            // TODO:
-            // Call CustomerService
-            // Include archived customers
-            // Print matching customers with CustomerPrinter
+            var matchingCustomers = _customerService.SearchCustomersByName(searchTerm);
+
+            _customerPrinter.PrintCustomers(matchingCustomers);
 
             Pause();
         }
@@ -86,8 +98,7 @@ namespace CENTRUMMarketing.App.Menus
 
             int? choice = ConsoleHelpers.Navigation("SELECT TASK STATUS", statusOptions);
 
-            if (choice == null || choice == 4)
-                return;
+            if (choice == null || choice == 4) return;
 
             TaskStatus selectedStatus;
 
