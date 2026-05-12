@@ -2,5 +2,9 @@
 {
     public enum DocumentType
     {
+        Offer,
+        Invoice,
+        DesignFile,
+        Other
     }
 }

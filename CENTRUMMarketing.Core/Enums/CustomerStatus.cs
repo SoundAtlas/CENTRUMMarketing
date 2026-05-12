@@ -2,5 +2,9 @@
 {
     public enum CustomerStatus
     {
+        Lead,
+        Active,
+        Inactive,
+        Dormant
     }
 }

@@ -1,6 +1,14 @@
-﻿namespace CENTRUMMarketing.Core.Models
+﻿using CENTRUMMarketing.Core.Interfaces;
+
+namespace CENTRUMMarketing.Core.Models
 {
-    public class BaseEntity
+    public abstract class BaseEntity : IHasId
     {
+        public int Id { get; set; }
+
+        protected BaseEntity(int id)
+        {
+            Id = id;
+        }
     }
 }
