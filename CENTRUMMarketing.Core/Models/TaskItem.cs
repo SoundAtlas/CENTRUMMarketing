@@ -2,10 +2,8 @@
 
 namespace CENTRUMMarketing.Core.Models
 {
-    public class TaskItem
+    public class TaskItem : BaseEntity
     {
-
-        public int TaskId { get; set; }
         public int CustomerId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -13,13 +11,12 @@ namespace CENTRUMMarketing.Core.Models
         public TaskStatus Status { get; set; }
 
         public TaskItem(
-            int taskId,
+            int id,
             int customerId,
             string title,
             string description,
-            DateTime deadline)
+            DateTime deadline) : base(id)
         {
-            TaskId = taskId;
             CustomerId = customerId;
             Title = title;
             Description = description;

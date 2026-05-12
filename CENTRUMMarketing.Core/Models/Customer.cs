@@ -2,9 +2,8 @@
 
 namespace CENTRUMMarketing.Core.Models
 {
-    public class Customer
+    public class Customer : BaseEntity
     {
-        public int CustomerId { get; set; }
         public string CompanyName { get; set; }
         public string ContactPerson { get; set; }
         public string Cvr { get; set; }
@@ -17,15 +16,16 @@ namespace CENTRUMMarketing.Core.Models
 
 
         public Customer(
-            int customerId,
+            int id,
             string companyName,
             string contactPerson,
             string cvr,
             string email,
             string phone,
             CustomerStatus status)
+            : base(id)
         {
-            CustomerId = customerId;
+
             CompanyName = companyName;
             ContactPerson = contactPerson;
             Cvr = cvr;
@@ -36,13 +36,12 @@ namespace CENTRUMMarketing.Core.Models
             InvoicingReady = false;
             LastActivityDate = DateTime.Now;
             Tasks = new List<TaskItem>();
-
         }
 
 
         public bool IsArchived()
         {
-            return Status == CustomerStatus.Dormant || Status == CustomerStatus.Inactive &&
+            return (Status == CustomerStatus.Dormant || Status == CustomerStatus.Inactive) &&
                 LastActivityDate <= DateTime.Now.AddDays(-30);
         }
 

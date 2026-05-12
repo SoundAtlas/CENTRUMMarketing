@@ -2,17 +2,15 @@
 
 namespace CENTRUMMarketing.Core.Models
 {
-    public class Document
+    public class Document : BaseEntity
     {
-        public int DocumentId { get; set; }
         public int CustomerId { get; set; }
         public string FilePath { get; set; }
         public DocumentType Type { get; set; }
 
 
-        public Document(int documentId, int customerId, string filePath, DocumentType type)
+        public Document(int id, int customerId, string filePath, DocumentType type) : base(id)
         {
-            DocumentId = documentId;
             CustomerId = customerId;
             FilePath = filePath;
             Type = type;

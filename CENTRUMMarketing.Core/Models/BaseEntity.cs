@@ -1,6 +1,12 @@
 ﻿namespace CENTRUMMarketing.Core.Models
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
+        public int Id { get; set; }
+
+        protected BaseEntity(int id)
+        {
+            Id = id;
+        }
     }
 }
