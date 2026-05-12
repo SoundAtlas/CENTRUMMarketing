@@ -1,6 +1,6 @@
 ﻿namespace CENTRUMMarketing.Core.Enums
 {
-    public enum TaskStatus
+    public enum TaskItemStatus
     {
         ToDo,
         InProgress,

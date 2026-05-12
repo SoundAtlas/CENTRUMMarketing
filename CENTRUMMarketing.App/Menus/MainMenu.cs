@@ -5,11 +5,13 @@ namespace CENTRUMMarketing.App.Menus
     public class MainMenu
     {
         private CustomerService _customerService;
+        private TaskService _taskService;
         private CustomerMenu _customerMenu;
 
-        public MainMenu(CustomerService customerService)
+        public MainMenu(CustomerService customerService, TaskService taskService)
         {
             _customerService = customerService;
+            _taskService = taskService;
             _customerMenu = new CustomerMenu(_customerService);
         }
 
