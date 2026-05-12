@@ -2,6 +2,7 @@
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Interfaces;
 using CENTRUMMarketing.Core.Repositories;
+using TaskStatus = CENTRUMMarketing.Core.Enums.TaskStatus;
 
 namespace CENTRUMMarketing.Core.Services
 {
@@ -42,21 +43,21 @@ namespace CENTRUMMarketing.Core.Services
                 .Count(t =>
                     t.Deadline.Date >= today &&
                     t.Deadline.Date <= weekFromNow &&
-                    t.Status != CENTRUMMarketing.Core.Enums.TaskStatus.Completed);
+                    t.Status != TaskStatus.Completed);
         }
 
         public int GetWaitingClientTasksCount()
         {
             return _taskRepository
                 .GetAll()
-                .Count(t => t.Status == CENTRUMMarketing.Core.Enums.TaskStatus.WaitingClient);
+                .Count(t => t.Status == TaskStatus.WaitingClient);
         }
 
         public int GetCompletedTasksCount()
         {
             return _taskRepository
                 .GetAll()
-                .Count(t => t.Status == CENTRUMMarketing.Core.Enums.TaskStatus.Completed);
+                .Count(t => t.Status == TaskStatus.Completed);
         }
     }
 }
