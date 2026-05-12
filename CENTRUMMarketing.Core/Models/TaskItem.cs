@@ -1,4 +1,4 @@
-﻿using TaskStatus = CENTRUMMarketing.Core.Enums.TaskStatus;
+﻿using CENTRUMMarketing.Core.Enums;
 
 namespace CENTRUMMarketing.Core.Models
 {
@@ -8,23 +8,24 @@ namespace CENTRUMMarketing.Core.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Deadline { get; set; }
-        public TaskStatus Status { get; set; }
+        public TaskItemStatus Status { get; set; }
 
         public TaskItem(
             int id,
             int customerId,
             string title,
             string description,
-            DateTime deadline) : base(id)
+            DateTime deadline,
+            TaskItemStatus status) : base(id)
         {
             CustomerId = customerId;
             Title = title;
             Description = description;
             Deadline = deadline;
-            Status = TaskStatus.ToDo;
+            Status = status;
         }
 
-        public void UpdateStatus(TaskStatus newStatus)
+        public void UpdateStatus(TaskItemStatus newStatus)
         {
             Status = newStatus;
         }
