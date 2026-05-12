@@ -5,13 +5,15 @@ namespace CENTRUMMarketing.App.Menus
 {
     public class MainMenu
     {
-        private CustomerService _customerService;
-        private CustomerMenu _customerMenu;
+        private readonly CustomerMenu _customerMenu;
+        private readonly DashboardMenu _dashboardMenu;
 
-        public MainMenu(CustomerService customerService)
+        public MainMenu(
+            CustomerMenu customerMenu,
+            DashboardMenu dashboardMenu)
         {
-            _customerService = customerService;
-            _customerMenu = new CustomerMenu(_customerService);
+            _customerMenu = customerMenu;
+            _dashboardMenu = dashboardMenu;
         }
 
         public void ShowMainMenu()
@@ -19,6 +21,7 @@ namespace CENTRUMMarketing.App.Menus
             string[] options =
             {
                 "Customer Management",
+                "Dashboard",
                 "Exit"
             };
 
@@ -26,7 +29,7 @@ namespace CENTRUMMarketing.App.Menus
 
             while (running)
             {
-                int? choice = ConsoleHelpers.Navigation(
+                int? choice = UI.ConsoleHelpers.Navigation(
                     "CENTRUM MAIN MENU",
                     options);
 
@@ -37,6 +40,10 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 1:
+                        _dashboardMenu.ShowDashboard();
+                        break;
+
+                    case 2:
                     case null:
                         running = false;
                         break;
