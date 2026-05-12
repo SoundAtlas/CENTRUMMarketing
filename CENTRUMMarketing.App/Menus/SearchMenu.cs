@@ -53,8 +53,8 @@ namespace CENTRUMMarketing.App.Menus
 
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                Console.WriteLine("\nSearch text cannot be empty. Press a key to continue...");
-                Console.ReadKey();
+                Console.WriteLine("\nSearch text cannot be empty.");
+                Pause();
                 return;
             }
 
@@ -65,8 +65,7 @@ namespace CENTRUMMarketing.App.Menus
             // Include archived customers
             // Print matching customers with CustomerPrinter
 
-            Console.WriteLine("\nSearch completed. Press a key to continue...");
-            Console.ReadKey();
+            Pause();
         }
 
         public void ShowTasksByStatus()
@@ -120,15 +119,29 @@ namespace CENTRUMMarketing.App.Menus
             // Get tasks matching selectedStatus
             // Print matching tasks with TaskPrinter
 
-            Console.WriteLine("\nPress a key to continue...");
-            Console.ReadKey();
+            Pause();
         }
 
         public void ShowArchivedCustomers()
         {
-            // do something related to looking up archived customers
+            Console.Clear();
+            Console.WriteLine("ARCHIVED CUSTOMERS\n\n");
 
-            // archived customers are those with status "Dormant" and no activity for 30+ days
+            Console.WriteLine("Showing customers with status Dormant and no activity for 30+ days.");
+
+            // TODO:
+            // Call ArchiveService to get archived customers
+            //      - Status is Dormant
+            //      - LastActivityDate is 30+ days ago
+            // Print archived customers with CustomerPrinter
+
+            Pause();
+        }
+
+        private void Pause()
+        {
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
         }
     }
 }
