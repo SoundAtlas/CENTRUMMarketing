@@ -24,5 +24,39 @@ namespace CENTRUMMarketing.Core.Services
                 .GetAll()
                 .Count(c => c.Status == CustomerStatus.Active);
         }
+
+        public int GetLeadsCount()
+        {
+            return _customerRepository
+                .GetAll()
+                .Count(c => c.Status == CustomerStatus.Lead);
+        }
+
+        public int GetTasksDueThisWeekCount()
+        {
+            DateTime today = DateTime.Today;
+            DateTime weekFromNow = today.AddDays(7); 
+
+            return _taskRepository
+                .GetAll()
+                .Count(t =>
+                    t.Deadline.Date >= today &&
+                    t.Deadline.Date <= weekFromNow &&
+                    t.Status != CENTRUMMarketing.Core.Enums.TaskStatus.Completed);
+        }
+
+        public int GetWaitingClientTasksCount()
+        {
+            return _taskRepository
+                .GetAll()
+                .Count(t => t.Status == CENTRUMMarketing.Core.Enums.TaskStatus.WaitingClient);
+        }
+
+        public int GetCompletedTasksCount()
+        {
+            return _taskRepository
+                .GetAll()
+                .Count(t => t.Status == CENTRUMMarketing.Core.Enums.TaskStatus.Completed);
+        }
     }
 }
