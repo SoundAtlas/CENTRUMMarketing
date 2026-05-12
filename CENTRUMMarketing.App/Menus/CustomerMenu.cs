@@ -59,19 +59,19 @@ namespace CENTRUMMarketing.App.Menus
         {
             Console.Clear();
 
-            Console.WriteLine("Company name: ");
+            Console.Write("Company name: ");
             string companyName = Console.ReadLine();
 
-            Console.WriteLine("Contact person: ");
+            Console.Write("Contact person: ");
             string contactPerson = Console.ReadLine();
 
-            Console.WriteLine("CVR: ");
+            Console.Write("CVR: ");
             string cvr = Console.ReadLine();
 
-            Console.WriteLine("Email: ");
+            Console.Write("Email: ");
             string email = Console.ReadLine();
 
-            Console.WriteLine("Phone number: ");
+            Console.Write("Phone number: ");
             string phone = Console.ReadLine();
 
             // CustomerStatus
@@ -114,7 +114,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Customer added: {customer.CompanyName}");
-            Console.WriteLine("Press any key to continue...");
+            Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
 
@@ -160,7 +160,7 @@ namespace CENTRUMMarketing.App.Menus
             else
             {
                 Console.WriteLine("Customer not found");
-                Console.WriteLine("Press any key to continue...");
+                Console.Write("Press any key to continue...");
                 Console.ReadKey();
             }
 
@@ -278,7 +278,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Customer: {customer.CompanyName} has been updated.");
-            Console.WriteLine("Press any key to continue...");
+            Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
 
@@ -328,7 +328,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Status updated to: {customer.Status}");
-            Console.WriteLine("Press any key to continue...");
+            Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
     }
