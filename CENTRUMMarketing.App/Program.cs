@@ -15,39 +15,12 @@ namespace CENTRUMMarketing.App
 
             CustomerMenu customerMenu = new CustomerMenu(customerService);
             MainMenu mainMenu = new MainMenu(customerService);
+            mainMenu.ShowMainMenu();
 
-            bool running = true;
-
-            while (running)
-            {
-                Console.Clear();
-                mainMenu.ShowMainMenu();
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        customerMenu.ShowCustomerMenu();
-                        break;
-
-                    case "0":
-                        running = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Invalid choice.");
-                        Console.ReadKey();
-                        break;
-                }
-
-            }
         }
-
-
-
     }
-
 }
+
+
 
 
