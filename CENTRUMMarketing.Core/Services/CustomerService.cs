@@ -36,5 +36,27 @@ namespace CENTRUMMarketing.Core.Services
             return null;
         }
 
+        public List<Customer> SearchCustomersByName(string searchTerm)
+        {
+            List<Customer> results = [];
+
+            if (string.IsNullOrWhiteSpace(searchTerm)) return results;
+
+            searchTerm = searchTerm.Trim();
+
+            foreach (Customer customer in _customers)
+            {
+                bool companyNameMatches = customer.CompanyName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
+                bool contactPersonMatches = customer.ContactPerson.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
+
+                if (companyNameMatches || contactPersonMatches)
+                {
+                    results.Add(customer);
+                }
+            }
+
+            return results;
+        }
+
     }
 }

@@ -46,7 +46,8 @@ namespace CENTRUMMarketing.App.Menus
         private void SearchCustomerByName()
         {
             Console.Clear();
-            Console.WriteLine("SEARCH CUSTOMER BY NAME\n\n");
+            Console.WriteLine("SEARCH CUSTOMER BY NAME");
+            Console.WriteLine();
 
             Console.Write("Enter full or partial customer name: ");
             string searchTerm = Console.ReadLine()?.Trim() ?? "";
@@ -68,10 +69,11 @@ namespace CENTRUMMarketing.App.Menus
             Pause();
         }
 
-        public void ShowTasksByStatus()
+        private void ShowTasksByStatus()
         {
             Console.Clear();
-            Console.WriteLine("VIEW TASKS BY STATUS\n\n");
+            Console.WriteLine("VIEW TASKS BY STATUS");
+            Console.WriteLine();
 
             string[] statusOptions =
             {
@@ -112,7 +114,8 @@ namespace CENTRUMMarketing.App.Menus
             }
 
             Console.Clear();
-            Console.WriteLine($"TASKS WITH STATUS: {selectedStatus}\n\n");
+            Console.WriteLine($"TASKS WITH STATUS: {selectedStatus}");
+            Console.WriteLine();
 
             // TODO:
             // Call TaskService to get tasks with selectedStatus
@@ -122,10 +125,11 @@ namespace CENTRUMMarketing.App.Menus
             Pause();
         }
 
-        public void ShowArchivedCustomers()
+        private void ShowArchivedCustomers()
         {
             Console.Clear();
-            Console.WriteLine("ARCHIVED CUSTOMERS\n\n");
+            Console.WriteLine("ARCHIVED CUSTOMERS");
+            Console.WriteLine();
 
             Console.WriteLine("Showing customers with status Dormant and no activity for 30+ days.");
 
