@@ -8,7 +8,7 @@ namespace CENTRUMMarketing.Core.Repositories
 
         public TaskRepository()
         {
-            _jsonRepository = new JsonRepository<TaskItem>("tasks.json");
+            _jsonRepository = new JsonRepository<TaskItem>(@"..\..\..\..\CENTRUMMarketing.Core\Data\tasks.json");
         }
 
         public List<TaskItem> GetAll()
@@ -32,6 +32,11 @@ namespace CENTRUMMarketing.Core.Repositories
             }
 
             return null;
+        }
+
+        public void Save()
+        {
+            _jsonRepository.Save();
         }
     }
 }

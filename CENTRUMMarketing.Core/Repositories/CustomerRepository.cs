@@ -9,7 +9,7 @@ namespace CENTRUMMarketing.Core.Repositories
 
         public CustomerRepository()
         {
-            _jsonRepository = new JsonRepository<Customer>("customers.json");
+            _jsonRepository = new JsonRepository<Customer>(@"..\..\..\..\CENTRUMMarketing.Core\Data\customers.json");
         }
 
 
@@ -35,5 +35,12 @@ namespace CENTRUMMarketing.Core.Repositories
 
             return null;
         }
+
+        public void Save()
+        {
+            _jsonRepository.Save();
+        }
+
+
     }
 }

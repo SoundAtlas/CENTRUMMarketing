@@ -100,6 +100,7 @@ namespace CENTRUMMarketing.Core.Services
             }
 
             task.Status = newStatus;
+            _taskRepository.Save();
             return true;
         }
 
@@ -113,6 +114,7 @@ namespace CENTRUMMarketing.Core.Services
             }
 
             task.Deadline = newDeadline;
+            _taskRepository.Save();
             return true;
         }
 
