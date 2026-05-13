@@ -1,4 +1,5 @@
-﻿using CENTRUMMarketing.App.UI;
+﻿using CENTRUMMarketing.App.Helpers;
+using CENTRUMMarketing.App.UI;
 using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
@@ -135,10 +136,8 @@ namespace CENTRUMMarketing.App.Menus
             }
 
             Console.WriteLine("=======================================");
-            Console.Write("Enter customer ID to view details (0 to return): ");
 
-
-            int id = int.Parse(Console.ReadLine());
+            int id = InputHelpers.ReadInt("Enter customer ID to view details (0 to return): ");
 
             if (id == 0)
             {

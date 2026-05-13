@@ -1,4 +1,5 @@
-﻿using CENTRUMMarketing.Core.Interfaces;
+﻿using CENTRUMMarketing.Core.Exceptions;
+using CENTRUMMarketing.Core.Interfaces;
 using System.Text.Json;
 
 namespace CENTRUMMarketing.Core.Repositories
@@ -27,31 +28,53 @@ namespace CENTRUMMarketing.Core.Repositories
 
         public void Save()
         {
-            string json = JsonSerializer.Serialize(_items, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
 
-            File.WriteAllText(_filePath, json);
+            try
+            {
+                string json = JsonSerializer.Serialize(_items, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
+                File.WriteAllText(_filePath, json);
+
+            }
+
+            catch (Exception ex)
+            {
+                throw new RepositoryException(
+                    "An error occurred while saving data to the JSON file.", ex);
+            }
         }
 
         private List<T> Load()
         {
-            if (!File.Exists(_filePath))
+
+            try
             {
-                return new List<T>();
+                if (!File.Exists(_filePath))
+                {
+                    return new List<T>();
+                }
+
+                string json = File.ReadAllText(_filePath);
+
+                List<T>? loadedItems = JsonSerializer.Deserialize<List<T>>(json);
+
+                if (loadedItems == null)
+                {
+                    return new List<T>();
+                }
+
+                return loadedItems;
+
             }
 
-            string json = File.ReadAllText(_filePath);
-
-            List<T>? loadedItems = JsonSerializer.Deserialize<List<T>>(json);
-
-            if (loadedItems == null)
+            catch (Exception ex)
             {
-                return new List<T>();
+                throw new RepositoryException(
+                    "An error occurred while loading data from the JSON file.", ex);
             }
-
-            return loadedItems;
         }
     }
 }

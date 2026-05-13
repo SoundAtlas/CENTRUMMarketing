@@ -1,4 +1,5 @@
-﻿using CENTRUMMarketing.Core.Enums;
+﻿using CENTRUMMarketing.App.Helpers;
+using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Exceptions;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
@@ -72,9 +73,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("               ADD TASK                ");
             Console.WriteLine("=======================================");
 
-            Console.Write("Customer ID: ");
-
-            int customerId = int.Parse(Console.ReadLine());
+            int customerId = InputHelpers.ReadInt("Customer ID: ");
 
             Console.Write("Task title: ");
             string title = Console.ReadLine();
@@ -82,8 +81,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.Write("Task description: ");
             string description = Console.ReadLine();
 
-            Console.Write("Deadline (yyyy-mm-dd): ");
-            DateTime deadline = DateTime.Parse(Console.ReadLine());
+            DateTime deadline = InputHelpers.ReadDate("Deadline (yyyy-mm-dd): ");
 
             Console.WriteLine("Choose task status: ");
             Console.WriteLine("1. To Do");
@@ -177,9 +175,8 @@ namespace CENTRUMMarketing.App.Menus
                 }
             }
             Console.WriteLine("=======================================");
-            Console.Write("Enter task ID to view details (0 to return): ");
 
-            int id = int.Parse(Console.ReadLine());
+            int id = InputHelpers.ReadInt("Enter task ID to view details (0 to return): ");
 
             if (id == 0)
             {
@@ -210,8 +207,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("         VIEW TASKS BY CUSTOMER        ");
             Console.WriteLine("=======================================");
 
-            Console.Write("Enter Customer ID: ");
-            int customerId = int.Parse(Console.ReadLine());
+            int customerId = InputHelpers.ReadInt("Enter Customer ID: ");
 
             Customer? customer = _customerService.GetCustomerById(customerId);
 
@@ -423,9 +419,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine($"Current deadline: {task.Deadline.ToShortDateString()}");
             Console.WriteLine("=======================================");
 
-            Console.Write("Enter new deadline (yyyy-mm-dd): ");
-
-            DateTime newDeadline = DateTime.Parse(Console.ReadLine());
+            DateTime newDeadline = InputHelpers.ReadDate("Enter new deadline (yyyy-mm-dd): ");
 
             try
             {
