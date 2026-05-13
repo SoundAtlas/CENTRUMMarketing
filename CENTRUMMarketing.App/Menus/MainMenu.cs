@@ -1,18 +1,19 @@
-﻿using CENTRUMMarketing.App.UI;
-using CENTRUMMarketing.Core.Services;
-
-namespace CENTRUMMarketing.App.Menus
+﻿namespace CENTRUMMarketing.App.Menus
 {
     public class MainMenu
     {
         private readonly CustomerMenu _customerMenu;
+        private readonly TaskMenu _taskMenu;
         private readonly DashboardMenu _dashboardMenu;
+
 
         public MainMenu(
             CustomerMenu customerMenu,
+            TaskMenu taskMenu,
             DashboardMenu dashboardMenu)
         {
             _customerMenu = customerMenu;
+            _taskMenu = taskMenu;
             _dashboardMenu = dashboardMenu;
         }
 
@@ -21,6 +22,7 @@ namespace CENTRUMMarketing.App.Menus
             string[] options =
             {
                 "Customer Management",
+                "Task Management",
                 "Dashboard",
                 "Exit"
             };
@@ -40,10 +42,14 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 1:
-                        _dashboardMenu.ShowDashboard();
+                        _taskMenu.ShowTaskMenu();
                         break;
 
                     case 2:
+                        _dashboardMenu.ShowDashboard();
+                        break;
+
+                    case 3:
                     case null:
                         running = false;
                         break;

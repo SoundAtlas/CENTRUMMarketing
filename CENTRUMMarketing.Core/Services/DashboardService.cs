@@ -1,8 +1,6 @@
 ﻿using CENTRUMMarketing.Core.Enums;
-using CENTRUMMarketing.Core.Models;
-using CENTRUMMarketing.Core.Interfaces;
 using CENTRUMMarketing.Core.Repositories;
-using TaskStatus = CENTRUMMarketing.Core.Enums.TaskStatus;
+
 
 namespace CENTRUMMarketing.Core.Services
 {
@@ -36,28 +34,28 @@ namespace CENTRUMMarketing.Core.Services
         public int GetTasksDueThisWeekCount()
         {
             DateTime today = DateTime.Today;
-            DateTime weekFromNow = today.AddDays(7); 
+            DateTime weekFromNow = today.AddDays(7);
 
             return _taskRepository
                 .GetAll()
                 .Count(t =>
                     t.Deadline.Date >= today &&
                     t.Deadline.Date <= weekFromNow &&
-                    t.Status != TaskStatus.Completed);
+                    t.Status != TaskItemStatus.Completed);
         }
 
         public int GetWaitingClientTasksCount()
         {
             return _taskRepository
                 .GetAll()
-                .Count(t => t.Status == TaskStatus.WaitingClient);
+                .Count(t => t.Status == TaskItemStatus.WaitingClient);
         }
 
         public int GetCompletedTasksCount()
         {
             return _taskRepository
                 .GetAll()
-                .Count(t => t.Status == TaskStatus.Completed);
+                .Count(t => t.Status == TaskItemStatus.Completed);
         }
     }
 }

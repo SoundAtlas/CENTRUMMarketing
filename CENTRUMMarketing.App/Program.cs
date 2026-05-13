@@ -20,19 +20,22 @@ namespace CENTRUMMarketing.App
             TaskRepository taskRepository = new TaskRepository();
 
             DashboardService dashboardService = new DashboardService(
-                customerRepository, 
+                customerRepository,
                 taskRepository);
 
             DashboardPrinter dashboardPrinter = new DashboardPrinter();
 
             DashboardMenu dashboardMenu = new DashboardMenu(
-                dashboardService, 
+                dashboardService,
                 dashboardPrinter);
 
             CustomerMenu customerMenu = new CustomerMenu(customerService);
 
+            TaskMenu taskMenu = new TaskMenu(taskService, customerService);
+
             MainMenu mainMenu = new MainMenu(
-                customerMenu, 
+                customerMenu,
+                taskMenu,
                 dashboardMenu);
 
             mainMenu.ShowMainMenu();

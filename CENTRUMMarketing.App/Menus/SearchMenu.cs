@@ -1,6 +1,6 @@
 ﻿using CENTRUMMarketing.App.UI;
+using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Services;
-using TaskStatus = CENTRUMMarketing.Core.Enums.TaskStatus;
 
 namespace CENTRUMMarketing.App.Menus
 {
@@ -100,24 +100,24 @@ namespace CENTRUMMarketing.App.Menus
 
             if (choice == null || choice == 4) return;
 
-            TaskStatus selectedStatus;
+            TaskItemStatus selectedStatus;
 
             switch (choice)
             {
                 case 0:
-                    selectedStatus = TaskStatus.ToDo;
+                    selectedStatus = TaskItemStatus.ToDo;
                     break;
 
                 case 1:
-                    selectedStatus = TaskStatus.InProgress;
+                    selectedStatus = TaskItemStatus.InProgress;
                     break;
 
                 case 2:
-                    selectedStatus = TaskStatus.WaitingClient;
+                    selectedStatus = TaskItemStatus.WaitingClient;
                     break;
 
                 case 3:
-                    selectedStatus = TaskStatus.Completed;
+                    selectedStatus = TaskItemStatus.Completed;
                     break;
 
                 default:
