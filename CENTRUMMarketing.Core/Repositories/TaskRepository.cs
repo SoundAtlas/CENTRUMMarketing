@@ -1,8 +1,9 @@
-﻿using CENTRUMMarketing.Core.Models;
+﻿using CENTRUMMarketing.Core.Interfaces;
+using CENTRUMMarketing.Core.Models;
 
 namespace CENTRUMMarketing.Core.Repositories
 {
-    public class TaskRepository
+    public class TaskRepository : ITaskRepository
     {
         private readonly JsonRepository<TaskItem> _jsonRepository;
 

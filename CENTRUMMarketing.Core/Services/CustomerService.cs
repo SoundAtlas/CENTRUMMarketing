@@ -1,15 +1,15 @@
 ﻿using CENTRUMMarketing.Core.Enums;
+using CENTRUMMarketing.Core.Interfaces;
 using CENTRUMMarketing.Core.Models;
-using CENTRUMMarketing.Core.Repositories;
 
 namespace CENTRUMMarketing.Core.Services
 {
     public class CustomerService
     {
-        private readonly CustomerRepository _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
         private int _nextId;
 
-        public CustomerService(CustomerRepository customerRepository)
+        public CustomerService(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
 

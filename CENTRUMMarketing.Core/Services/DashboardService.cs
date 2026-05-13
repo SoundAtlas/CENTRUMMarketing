@@ -1,17 +1,18 @@
 ﻿using CENTRUMMarketing.Core.Enums;
-using CENTRUMMarketing.Core.Repositories;
+using CENTRUMMarketing.Core.Interfaces;
 
 
 namespace CENTRUMMarketing.Core.Services
 {
     public class DashboardService
     {
-        private readonly CustomerRepository _customerRepository;
-        private readonly TaskRepository _taskRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ITaskRepository _taskRepository;
+
 
         public DashboardService(
-            CustomerRepository customerRepository,
-            TaskRepository taskRepository)
+            ICustomerRepository customerRepository,
+            ITaskRepository taskRepository)
         {
             _customerRepository = customerRepository;
             _taskRepository = taskRepository;

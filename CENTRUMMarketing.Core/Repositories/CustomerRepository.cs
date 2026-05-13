@@ -1,8 +1,9 @@
-﻿using CENTRUMMarketing.Core.Models;
+﻿using CENTRUMMarketing.Core.Interfaces;
+using CENTRUMMarketing.Core.Models;
 
 namespace CENTRUMMarketing.Core.Repositories
 {
-    public class CustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
 
         private readonly JsonRepository<Customer> _jsonRepository;
