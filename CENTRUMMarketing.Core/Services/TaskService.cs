@@ -1,18 +1,23 @@
 ﻿using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Models;
+using CENTRUMMarketing.Core.Repositories;
 
 namespace CENTRUMMarketing.Core.Services
 {
     public class TaskService
     {
-        private List<TaskItem> _tasks = new List<TaskItem>();
+        private readonly TaskRepository _taskRepository;
+        private readonly CustomerRepository _customerRepository;
         private int _nextId = 1;
 
-        private CustomerService _customerService;
 
-        public TaskService(CustomerService customerService)
+
+        public TaskService(
+           TaskRepository taskRepository,
+           CustomerRepository customerRepository)
         {
-            _customerService = customerService;
+            _taskRepository = taskRepository;
+            _customerRepository = customerRepository;
         }
 
         public TaskItem? AddTask(
@@ -22,7 +27,7 @@ namespace CENTRUMMarketing.Core.Services
             DateTime deadline,
             TaskItemStatus status)
         {
-            Customer? customer = _customerService.GetCustomerById(customerId);
+            Customer? customer = _customerRepository.GetById(customerId);
 
             if (customer == null)
             {
@@ -37,7 +42,7 @@ namespace CENTRUMMarketing.Core.Services
                 deadline,
                 status);
 
-            _tasks.Add(task);
+            _taskRepository.Add(task);
             customer.Tasks.Add(task);
 
             _nextId++;
@@ -47,14 +52,14 @@ namespace CENTRUMMarketing.Core.Services
 
         public List<TaskItem> GetAllTasks()
         {
-            return _tasks;
+            return _taskRepository.GetAll();
         }
 
         public List<TaskItem> GetTasksByCustomerId(int customerId)
         {
             List<TaskItem> customerTasks = new List<TaskItem>();
 
-            foreach (TaskItem task in _tasks)
+            foreach (TaskItem task in _taskRepository.GetAll())
             {
                 if (task.CustomerId == customerId)
                 {
@@ -65,18 +70,35 @@ namespace CENTRUMMarketing.Core.Services
             return customerTasks;
         }
 
-
         public TaskItem? GetTaskById(int id)
         {
-            foreach (TaskItem task in _tasks)
+            return _taskRepository.GetById(id);
+        }
+
+        public bool UpdateTaskStatus(int taskId, TaskItemStatus newStatus)
+        {
+            TaskItem? task = _taskRepository.GetById(taskId);
+
+            if (task == null)
             {
-                if (task.Id == id)
-                {
-                    return task;
-                }
+                return false;
             }
 
-            return null;
+            task.Status = newStatus;
+            return true;
+        }
+
+        public bool UpdateTaskDeadline(int taskId, DateTime newDeadline)
+        {
+            TaskItem? task = _taskRepository.GetById(taskId);
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            task.Deadline = newDeadline;
+            return true;
         }
 
     }

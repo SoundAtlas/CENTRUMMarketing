@@ -367,29 +367,48 @@ namespace CENTRUMMarketing.App.Menus
 
             string choice = Console.ReadLine();
 
+            TaskItemStatus newStatus;
+
             switch (choice)
             {
                 case "1":
-                    task.Status = TaskItemStatus.ToDo;
+                    newStatus = TaskItemStatus.ToDo;
                     break;
+
                 case "2":
-                    task.Status = TaskItemStatus.InProgress;
+                    newStatus = TaskItemStatus.InProgress;
                     break;
+
                 case "3":
-                    task.Status = TaskItemStatus.WaitingClient;
+                    newStatus = TaskItemStatus.WaitingClient;
                     break;
+
                 case "4":
-                    task.Status = TaskItemStatus.Completed;
+                    newStatus = TaskItemStatus.Completed;
                     break;
+
                 case "0":
                     return;
+
                 default:
                     Console.WriteLine("Invalid choice.");
                     Console.ReadKey();
                     return;
             }
-            Console.WriteLine();
-            Console.WriteLine($"Task status updated to: {task.Status}");
+
+            bool updated = _taskService.UpdateTaskStatus(task.Id, newStatus);
+
+            if (updated)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Task status updated to: {task.Status}");
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Task could not be updated.");
+            }
+
             Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
@@ -408,9 +427,18 @@ namespace CENTRUMMarketing.App.Menus
 
             DateTime newDeadline = DateTime.Parse(Console.ReadLine());
 
-            task.Deadline = newDeadline;
-            Console.WriteLine();
-            Console.WriteLine($"Task deadline updated to: {task.Deadline.ToShortDateString()}");
+            bool updated = _taskService.UpdateTaskDeadline(task.Id, newDeadline);
+
+            if (updated)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Task deadline updated to: {task.Deadline.ToShortDateString()}");
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Task deadline could not be updated.");
+            }
             Console.Write("Press any key to continue...");
             Console.ReadKey();
         }

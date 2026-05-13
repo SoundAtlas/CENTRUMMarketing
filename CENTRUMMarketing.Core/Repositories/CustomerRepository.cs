@@ -6,7 +6,7 @@ namespace CENTRUMMarketing.Core.Repositories
     {
         private readonly List<Customer> _customers = new();
 
-        public IEnumerable<Customer> GetAll()
+        public List<Customer> GetAll()
         {
             return _customers;
         }
@@ -14,6 +14,19 @@ namespace CENTRUMMarketing.Core.Repositories
         public void Add(Customer customer)
         {
             _customers.Add(customer);
+        }
+
+        public Customer? GetById(int id)
+        {
+            foreach (Customer customer in _customers)
+            {
+                if (customer.Id == id)
+                {
+                    return customer;
+                }
+            }
+
+            return null;
         }
     }
 }

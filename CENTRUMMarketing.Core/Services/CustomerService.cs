@@ -1,18 +1,25 @@
 ﻿using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Models;
+using CENTRUMMarketing.Core.Repositories;
 
 namespace CENTRUMMarketing.Core.Services
 {
     public class CustomerService
     {
-        private List<Customer> _customers = new List<Customer>();
+        private readonly CustomerRepository _customerRepository;
         private int _nextId = 1;
+
+        public CustomerService(CustomerRepository customerRepository)
+        {
+            _customerRepository = customerRepository;
+        }
 
         public Customer AddCustomer(string companyName, string contactPerson, string cvr, string email, string phone, CustomerStatus status)
         {
             Customer customer = new Customer(_nextId, companyName, contactPerson, cvr, email, phone, status);
 
-            _customers.Add(customer);
+            _customerRepository.Add(customer);
+
             _nextId++;
 
             return customer;
@@ -20,31 +27,26 @@ namespace CENTRUMMarketing.Core.Services
 
         public List<Customer> GetAllCustomers()
         {
-            return _customers;
+            return _customerRepository.GetAll();
         }
 
         public Customer? GetCustomerById(int id)
         {
-            foreach (var customer in _customers)
-            {
-                if (customer.Id == id)
-                {
-                    return customer;
-                }
-            }
-
-            return null;
+            return _customerRepository.GetById(id);
         }
 
         public List<Customer> SearchCustomersByName(string searchTerm)
         {
-            List<Customer> results = [];
+            List<Customer> results = new List<Customer>();
 
-            if (string.IsNullOrWhiteSpace(searchTerm)) return results;
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return results;
+            }
 
             searchTerm = searchTerm.Trim();
 
-            foreach (Customer customer in _customers)
+            foreach (Customer customer in _customerRepository.GetAll())
             {
                 bool companyNameMatches = customer.CompanyName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
                 bool contactPersonMatches = customer.ContactPerson.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
@@ -57,6 +59,5 @@ namespace CENTRUMMarketing.Core.Services
 
             return results;
         }
-
     }
 }
