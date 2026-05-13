@@ -1,4 +1,6 @@
-﻿using CENTRUMMarketing.Core.Enums;
+﻿using CENTRUMMarketing.App.Helpers;
+using CENTRUMMarketing.Core.Enums;
+using CENTRUMMarketing.Core.Exceptions;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
 
@@ -71,28 +73,13 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("               ADD TASK                ");
             Console.WriteLine("=======================================");
 
-            Console.Write("Customer ID: ");
+            int customerId = InputHelpers.ReadInt("Customer ID: ");
 
-            int customerId = int.Parse(Console.ReadLine());
+            string title = InputHelpers.ReadRequiredString("Task title: ");
 
-            Customer? customer = _customerService.GetCustomerById(customerId);
+            string description = InputHelpers.ReadRequiredString("Task description: ");
 
-            if (customer == null)
-            {
-                Console.WriteLine("Customer not found.");
-                Console.Write("Press any key to continue...");
-                Console.ReadKey();
-                return;
-            }
-
-            Console.Write("Task title: ");
-            string title = Console.ReadLine();
-
-            Console.Write("Task description: ");
-            string description = Console.ReadLine();
-
-            Console.Write("Deadline (yyyy-mm-dd): ");
-            DateTime deadline = DateTime.Parse(Console.ReadLine());
+            DateTime deadline = InputHelpers.ReadDate("Deadline (yyyy-mm-dd): ");
 
             Console.WriteLine("Choose task status: ");
             Console.WriteLine("1. To Do");
@@ -124,22 +111,32 @@ namespace CENTRUMMarketing.App.Menus
                     break;
             }
 
-            TaskItem? task = _taskService.AddTask(
-                customerId,
-                title,
-                description,
-                deadline,
-                status);
+            try
+            {
+                TaskItem? task = _taskService.AddTask(
+                    customerId,
+                    title,
+                    description,
+                    deadline,
+                    status);
 
-            if (task == null)
-            {
-                Console.WriteLine("Task could not be created");
-            }
-            else
-            {
                 Console.WriteLine();
                 Console.WriteLine("Task created successfully.");
+
             }
+
+            catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
+            catch (InvalidDeadlineException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
             Console.Write("Press any key to continue...");
             Console.ReadKey();
 
@@ -176,9 +173,8 @@ namespace CENTRUMMarketing.App.Menus
                 }
             }
             Console.WriteLine("=======================================");
-            Console.Write("Enter task ID to view details (0 to return): ");
 
-            int id = int.Parse(Console.ReadLine());
+            int id = InputHelpers.ReadInt("Enter task ID to view details (0 to return): ");
 
             if (id == 0)
             {
@@ -209,8 +205,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("         VIEW TASKS BY CUSTOMER        ");
             Console.WriteLine("=======================================");
 
-            Console.Write("Enter Customer ID: ");
-            int customerId = int.Parse(Console.ReadLine());
+            int customerId = InputHelpers.ReadInt("Enter Customer ID: ");
 
             Customer? customer = _customerService.GetCustomerById(customerId);
 
@@ -327,13 +322,11 @@ namespace CENTRUMMarketing.App.Menus
             switch (choice)
             {
                 case "1":
-                    Console.Write("Enter new title: ");
-                    task.Title = Console.ReadLine();
+                    task.Title = InputHelpers.ReadRequiredString("Enter new title: ");
                     break;
 
                 case "2":
-                    Console.Write("Enter new description: ");
-                    task.Description = Console.ReadLine();
+                    task.Description = InputHelpers.ReadRequiredString("Enter new description: ");
                     break;
 
                 case "0":
@@ -367,29 +360,47 @@ namespace CENTRUMMarketing.App.Menus
 
             string choice = Console.ReadLine();
 
+            TaskItemStatus newStatus;
+
             switch (choice)
             {
                 case "1":
-                    task.Status = TaskItemStatus.ToDo;
+                    newStatus = TaskItemStatus.ToDo;
                     break;
+
                 case "2":
-                    task.Status = TaskItemStatus.InProgress;
+                    newStatus = TaskItemStatus.InProgress;
                     break;
+
                 case "3":
-                    task.Status = TaskItemStatus.WaitingClient;
+                    newStatus = TaskItemStatus.WaitingClient;
                     break;
+
                 case "4":
-                    task.Status = TaskItemStatus.Completed;
+                    newStatus = TaskItemStatus.Completed;
                     break;
+
                 case "0":
                     return;
+
                 default:
                     Console.WriteLine("Invalid choice.");
                     Console.ReadKey();
                     return;
             }
-            Console.WriteLine();
-            Console.WriteLine($"Task status updated to: {task.Status}");
+
+            try
+            {
+                _taskService.UpdateTaskStatus(task.Id, newStatus);
+                Console.WriteLine($"Task status updated to: {task.Status}");
+            }
+
+            catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
             Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
@@ -404,15 +415,29 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine($"Current deadline: {task.Deadline.ToShortDateString()}");
             Console.WriteLine("=======================================");
 
-            Console.Write("Enter new deadline (yyyy-mm-dd): ");
+            DateTime newDeadline = InputHelpers.ReadDate("Enter new deadline (yyyy-mm-dd): ");
 
-            DateTime newDeadline = DateTime.Parse(Console.ReadLine());
+            try
+            {
+                _taskService.UpdateTaskDeadline(task.Id, newDeadline);
+                Console.WriteLine($"Task deadline updated to: {task.Deadline.ToShortDateString()}");
+            }
 
-            task.Deadline = newDeadline;
-            Console.WriteLine();
-            Console.WriteLine($"Task deadline updated to: {task.Deadline.ToShortDateString()}");
+            catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
+            catch (InvalidDeadlineException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
             Console.Write("Press any key to continue...");
             Console.ReadKey();
+
         }
     }
 }

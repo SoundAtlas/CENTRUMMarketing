@@ -1,18 +1,36 @@
 ﻿using CENTRUMMarketing.Core.Enums;
+using CENTRUMMarketing.Core.Exceptions;
+using CENTRUMMarketing.Core.Interfaces;
 using CENTRUMMarketing.Core.Models;
 
 namespace CENTRUMMarketing.Core.Services
 {
     public class TaskService
     {
-        private List<TaskItem> _tasks = new List<TaskItem>();
-        private int _nextId = 1;
+        private readonly ITaskRepository _taskRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private int _nextId;
 
-        private CustomerService _customerService;
 
-        public TaskService(CustomerService customerService)
+
+        public TaskService(
+           ITaskRepository taskRepository,
+           ICustomerRepository customerRepository)
         {
-            _customerService = customerService;
+            _taskRepository = taskRepository;
+            _customerRepository = customerRepository;
+
+            // Initialize _nextId based on existing tasks
+            List<TaskItem> existingTasks = _taskRepository.GetAll();
+
+            if (existingTasks.Count > 0)
+            {
+                _nextId = existingTasks.Max(t => t.Id) + 1;
+            }
+            else
+            {
+                _nextId = 1;
+            }
         }
 
         public TaskItem? AddTask(
@@ -22,11 +40,18 @@ namespace CENTRUMMarketing.Core.Services
             DateTime deadline,
             TaskItemStatus status)
         {
-            Customer? customer = _customerService.GetCustomerById(customerId);
+            Customer? customer = _customerRepository.GetById(customerId);
 
             if (customer == null)
             {
-                return null;
+                throw new EntityNotFoundException(
+                    $"Customer with ID {customerId} not found.");
+            }
+
+            if (deadline < DateTime.Now)
+            {
+                throw new InvalidDeadlineException(
+                    "Deadline cannot be in the past.");
             }
 
             TaskItem task = new TaskItem(
@@ -37,7 +62,7 @@ namespace CENTRUMMarketing.Core.Services
                 deadline,
                 status);
 
-            _tasks.Add(task);
+            _taskRepository.Add(task);
             customer.Tasks.Add(task);
 
             _nextId++;
@@ -47,14 +72,14 @@ namespace CENTRUMMarketing.Core.Services
 
         public List<TaskItem> GetAllTasks()
         {
-            return _tasks;
+            return _taskRepository.GetAll();
         }
 
         public List<TaskItem> GetTasksByCustomerId(int customerId)
         {
             List<TaskItem> customerTasks = new List<TaskItem>();
 
-            foreach (TaskItem task in _tasks)
+            foreach (TaskItem task in _taskRepository.GetAll())
             {
                 if (task.CustomerId == customerId)
                 {
@@ -65,19 +90,45 @@ namespace CENTRUMMarketing.Core.Services
             return customerTasks;
         }
 
-
         public TaskItem? GetTaskById(int id)
         {
-            foreach (TaskItem task in _tasks)
+            return _taskRepository.GetById(id);
+        }
+
+        public List<TaskItem> GetTasksByStatus(TaskItemStatus status)
+        {
+            List<TaskItem> results = new List<TaskItem>();
+
+            foreach (TaskItem task in _taskRepository.GetAll())
             {
-                if (task.Id == id)
+                if (task.Status == status)
                 {
-                    return task;
+                    results.Add(task);
                 }
             }
 
-            return null;
+            return results;
         }
+
+        public void UpdateTaskStatus(int taskId, TaskItemStatus newStatus)
+        {
+            TaskItem? task = _taskRepository.GetById(taskId) ?? throw new EntityNotFoundException(
+                    $"Task with ID {taskId} was not found.");
+
+            task.Status = newStatus;
+            _taskRepository.Save();
+        }
+
+        public void UpdateTaskDeadline(int taskId, DateTime newDeadline)
+        {
+            TaskItem? task = _taskRepository.GetById(taskId) ?? throw new EntityNotFoundException(
+                    $"Task with ID {taskId} was not found.");
+
+            task.Deadline = newDeadline;
+            _taskRepository.Save();
+
+        }
+
 
     }
 }
