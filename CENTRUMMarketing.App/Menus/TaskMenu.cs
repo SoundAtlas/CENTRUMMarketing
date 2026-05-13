@@ -1,4 +1,5 @@
 ﻿using CENTRUMMarketing.Core.Enums;
+using CENTRUMMarketing.Core.Exceptions;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
 
@@ -75,16 +76,6 @@ namespace CENTRUMMarketing.App.Menus
 
             int customerId = int.Parse(Console.ReadLine());
 
-            Customer? customer = _customerService.GetCustomerById(customerId);
-
-            if (customer == null)
-            {
-                Console.WriteLine("Customer not found.");
-                Console.Write("Press any key to continue...");
-                Console.ReadKey();
-                return;
-            }
-
             Console.Write("Task title: ");
             string title = Console.ReadLine();
 
@@ -124,22 +115,32 @@ namespace CENTRUMMarketing.App.Menus
                     break;
             }
 
-            TaskItem? task = _taskService.AddTask(
-                customerId,
-                title,
-                description,
-                deadline,
-                status);
+            try
+            {
+                TaskItem? task = _taskService.AddTask(
+                    customerId,
+                    title,
+                    description,
+                    deadline,
+                    status);
 
-            if (task == null)
-            {
-                Console.WriteLine("Task could not be created");
-            }
-            else
-            {
                 Console.WriteLine();
                 Console.WriteLine("Task created successfully.");
+
             }
+
+            catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
+            catch (InvalidDeadlineException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
             Console.Write("Press any key to continue...");
             Console.ReadKey();
 
@@ -396,17 +397,16 @@ namespace CENTRUMMarketing.App.Menus
                     return;
             }
 
-            bool updated = _taskService.UpdateTaskStatus(task.Id, newStatus);
-
-            if (updated)
+            try
             {
-                Console.WriteLine();
+                _taskService.UpdateTaskStatus(task.Id, newStatus);
                 Console.WriteLine($"Task status updated to: {task.Status}");
             }
-            else
+
+            catch (EntityNotFoundException ex)
             {
                 Console.WriteLine();
-                Console.WriteLine("Task could not be updated.");
+                Console.WriteLine(ex.Message);
             }
 
             Console.Write("Press any key to continue...");
@@ -427,20 +427,27 @@ namespace CENTRUMMarketing.App.Menus
 
             DateTime newDeadline = DateTime.Parse(Console.ReadLine());
 
-            bool updated = _taskService.UpdateTaskDeadline(task.Id, newDeadline);
-
-            if (updated)
+            try
             {
-                Console.WriteLine();
+                _taskService.UpdateTaskDeadline(task.Id, newDeadline);
                 Console.WriteLine($"Task deadline updated to: {task.Deadline.ToShortDateString()}");
             }
-            else
+
+            catch (EntityNotFoundException ex)
             {
                 Console.WriteLine();
-                Console.WriteLine("Task deadline could not be updated.");
+                Console.WriteLine(ex.Message);
             }
+
+            catch (InvalidDeadlineException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
             Console.Write("Press any key to continue...");
             Console.ReadKey();
+
         }
     }
 }

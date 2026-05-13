@@ -1,7 +1,7 @@
 ﻿using CENTRUMMarketing.Core.Enums;
+using CENTRUMMarketing.Core.Exceptions;
 using CENTRUMMarketing.Core.Interfaces;
 using CENTRUMMarketing.Core.Models;
-
 
 namespace CENTRUMMarketing.Core.Services
 {
@@ -44,7 +44,14 @@ namespace CENTRUMMarketing.Core.Services
 
             if (customer == null)
             {
-                return null;
+                throw new EntityNotFoundException(
+                    $"Customer with ID {customerId} not found.");
+            }
+
+            if (deadline < DateTime.Now)
+            {
+                throw new InvalidDeadlineException(
+                    "Deadline cannot be in the past.");
             }
 
             TaskItem task = new TaskItem(
@@ -103,32 +110,23 @@ namespace CENTRUMMarketing.Core.Services
             return results;
         }
 
-        public bool UpdateTaskStatus(int taskId, TaskItemStatus newStatus)
+        public void UpdateTaskStatus(int taskId, TaskItemStatus newStatus)
         {
-            TaskItem? task = _taskRepository.GetById(taskId);
-
-            if (task == null)
-            {
-                return false;
-            }
+            TaskItem? task = _taskRepository.GetById(taskId) ?? throw new EntityNotFoundException(
+                    $"Task with ID {taskId} was not found.");
 
             task.Status = newStatus;
             _taskRepository.Save();
-            return true;
         }
 
-        public bool UpdateTaskDeadline(int taskId, DateTime newDeadline)
+        public void UpdateTaskDeadline(int taskId, DateTime newDeadline)
         {
-            TaskItem? task = _taskRepository.GetById(taskId);
-
-            if (task == null)
-            {
-                return false;
-            }
+            TaskItem? task = _taskRepository.GetById(taskId) ?? throw new EntityNotFoundException(
+                    $"Task with ID {taskId} was not found.");
 
             task.Deadline = newDeadline;
             _taskRepository.Save();
-            return true;
+
         }
 
 
