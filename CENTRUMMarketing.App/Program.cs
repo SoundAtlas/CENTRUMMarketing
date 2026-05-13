@@ -20,7 +20,9 @@ namespace CENTRUMMarketing.App
             TaskService taskService = new TaskService(taskRepository, customerRepository);
 
             customerService.AddCustomer("Nordic Design", "Mikkel Sørensen", "123456", "BLABLA@GMAIL.COM", "88888888", CustomerStatus.Lead);
-            customerService.AddCustomer("Nordic Design Studio", "Mikkel Hansen", "654321", "BLABLABLA@GMAIL.COM", "99999999", CustomerStatus.Active);
+            var archivedCustomer = customerService.AddCustomer("Nordic Design Studio", "Mikkel Hansen", "654321", "BLABLABLA@GMAIL.COM", "99999999", CustomerStatus.Dormant);
+
+            archivedCustomer.LastActivityDate = DateTime.Now.AddDays(-40);
 
             DashboardService dashboardService = new DashboardService(
                 customerRepository,

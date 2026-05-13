@@ -59,5 +59,20 @@ namespace CENTRUMMarketing.Core.Services
 
             return results;
         }
+
+        public List<Customer> GetArchivedCustomers()
+        {
+            List<Customer> archivedCustomers = new List<Customer>();
+
+            foreach (var customer in _customerRepository.GetAll())
+            {
+                if (customer.IsArchived())
+                {
+                    archivedCustomers.Add(customer);
+                }
+            }
+
+            return archivedCustomers;
+        }
     }
 }

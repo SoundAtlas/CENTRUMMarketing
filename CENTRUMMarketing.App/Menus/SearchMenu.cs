@@ -153,13 +153,17 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("ARCHIVED CUSTOMERS");
             Console.WriteLine();
 
-            Console.WriteLine("Showing customers with status Dormant and no activity for 30+ days.");
+            var archivedCustomers = _customerService.GetArchivedCustomers();
 
-            // TODO:
-            // Call ArchiveService to get archived customers
-            //      - Status is Dormant
-            //      - LastActivityDate is 30+ days ago
-            // Print archived customers with CustomerPrinter
+            if (archivedCustomers.Count == 0)
+            {
+                Console.WriteLine("No archived customers found.");
+            }
+            else
+            {
+                Console.WriteLine("Showing customers with status Dormant and no activity for 30+ days.");
+                _customerPrinter.PrintCustomers(archivedCustomers);
+            }
 
             Pause();
         }
