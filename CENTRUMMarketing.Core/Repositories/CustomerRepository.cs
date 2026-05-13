@@ -4,21 +4,28 @@ namespace CENTRUMMarketing.Core.Repositories
 {
     public class CustomerRepository
     {
-        private readonly List<Customer> _customers = new();
+
+        private readonly JsonRepository<Customer> _jsonRepository;
+
+        public CustomerRepository()
+        {
+            _jsonRepository = new JsonRepository<Customer>("customers.json");
+        }
+
 
         public List<Customer> GetAll()
         {
-            return _customers;
+            return _jsonRepository.GetAll();
         }
 
         public void Add(Customer customer)
         {
-            _customers.Add(customer);
+            _jsonRepository.Add(customer);
         }
 
         public Customer? GetById(int id)
         {
-            foreach (Customer customer in _customers)
+            foreach (Customer customer in _jsonRepository.GetAll())
             {
                 if (customer.Id == id)
                 {

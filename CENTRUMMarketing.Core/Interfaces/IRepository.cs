@@ -1,6 +1,11 @@
-﻿namespace CENTRUMMarketing.Core.Interfaces
+﻿
+
+namespace CENTRUMMarketing.Core.Interfaces
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
+        List<T> GetAll();
+        void Add(T item);
+        void Save();
     }
 }
