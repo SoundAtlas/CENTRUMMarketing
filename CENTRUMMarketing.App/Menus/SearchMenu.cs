@@ -1,4 +1,5 @@
-﻿using CENTRUMMarketing.App.UI;
+﻿using CENTRUMMarketing.App.Helpers;
+using CENTRUMMarketing.App.UI;
 using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Services;
 
@@ -61,16 +62,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("SEARCH CUSTOMER BY NAME");
             Console.WriteLine();
 
-            Console.Write("Enter full or partial customer name: ");
-            string searchTerm = Console.ReadLine()?.Trim() ?? "";
-
-            if (string.IsNullOrWhiteSpace(searchTerm))
-            {
-                Console.WriteLine();
-                Console.WriteLine("Search text cannot be empty.");
-                Pause();
-                return;
-            }
+            string searchTerm = InputHelpers.ReadRequiredString("Enter full or partial customer name: ");
 
             Console.WriteLine();
             Console.WriteLine($"Searching for customers matching: {searchTerm}");

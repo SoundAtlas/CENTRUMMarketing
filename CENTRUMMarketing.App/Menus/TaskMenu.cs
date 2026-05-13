@@ -75,11 +75,9 @@ namespace CENTRUMMarketing.App.Menus
 
             int customerId = InputHelpers.ReadInt("Customer ID: ");
 
-            Console.Write("Task title: ");
-            string title = Console.ReadLine();
+            string title = InputHelpers.ReadRequiredString("Task title: ");
 
-            Console.Write("Task description: ");
-            string description = Console.ReadLine();
+            string description = InputHelpers.ReadRequiredString("Task description: ");
 
             DateTime deadline = InputHelpers.ReadDate("Deadline (yyyy-mm-dd): ");
 
@@ -324,13 +322,11 @@ namespace CENTRUMMarketing.App.Menus
             switch (choice)
             {
                 case "1":
-                    Console.Write("Enter new title: ");
-                    task.Title = Console.ReadLine();
+                    task.Title = InputHelpers.ReadRequiredString("Enter new title: ");
                     break;
 
                 case "2":
-                    Console.Write("Enter new description: ");
-                    task.Description = Console.ReadLine();
+                    task.Description = InputHelpers.ReadRequiredString("Enter new description: ");
                     break;
 
                 case "0":

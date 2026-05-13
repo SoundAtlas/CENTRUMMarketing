@@ -54,20 +54,15 @@ namespace CENTRUMMarketing.App.Menus
         {
             Console.Clear();
 
-            Console.Write("Company name: ");
-            string companyName = Console.ReadLine();
+            string companyName = InputHelpers.ReadRequiredString("Company name: ");
 
-            Console.Write("Contact person: ");
-            string contactPerson = Console.ReadLine();
+            string contactPerson = InputHelpers.ReadRequiredString("Contact person: ");
 
-            Console.Write("CVR: ");
-            string cvr = Console.ReadLine();
+            string cvr = InputHelpers.ReadRequiredString("CVR: ");
 
-            Console.Write("Email: ");
-            string email = Console.ReadLine();
+            string email = InputHelpers.ReadRequiredString("Email: ");
 
-            Console.Write("Phone number: ");
-            string phone = Console.ReadLine();
+            string phone = InputHelpers.ReadRequiredString("Phone number: ");
 
             // CustomerStatus
             Console.WriteLine("Choose customer status: ");
@@ -236,28 +231,23 @@ namespace CENTRUMMarketing.App.Menus
             switch (choice)
             {
                 case "1":
-                    Console.Write("New company name: ");
-                    customer.CompanyName = Console.ReadLine();
+                    customer.CompanyName = InputHelpers.ReadRequiredString("New company name: ");
                     break;
 
                 case "2":
-                    Console.Write("New contact person: ");
-                    customer.ContactPerson = Console.ReadLine();
+                    customer.ContactPerson = InputHelpers.ReadRequiredString("New contact person: ");
                     break;
 
                 case "3":
-                    Console.Write("New CVR: ");
-                    customer.Cvr = Console.ReadLine();
+                    customer.Cvr = InputHelpers.ReadRequiredString("New CVR: ");
                     break;
 
                 case "4":
-                    Console.Write("New email: ");
-                    customer.Email = Console.ReadLine();
+                    customer.Email = InputHelpers.ReadRequiredString("New email: ");
                     break;
 
                 case "5":
-                    Console.Write("New phone number: ");
-                    customer.Phone = Console.ReadLine();
+                    customer.Phone = InputHelpers.ReadRequiredString("New phone number: ");
                     break;
 
                 case "0":
