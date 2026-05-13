@@ -8,7 +8,7 @@ namespace CENTRUMMarketing.Core.Services
     {
         private readonly TaskRepository _taskRepository;
         private readonly CustomerRepository _customerRepository;
-        private int _nextId = 1;
+        private int _nextId;
 
 
 
@@ -18,6 +18,18 @@ namespace CENTRUMMarketing.Core.Services
         {
             _taskRepository = taskRepository;
             _customerRepository = customerRepository;
+
+            // Initialize _nextId based on existing tasks
+            List<TaskItem> existingTasks = _taskRepository.GetAll();
+
+            if (existingTasks.Count > 0)
+            {
+                _nextId = existingTasks.Max(t => t.Id) + 1;
+            }
+            else
+            {
+                _nextId = 1;
+            }
         }
 
         public TaskItem? AddTask(

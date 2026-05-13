@@ -7,11 +7,23 @@ namespace CENTRUMMarketing.Core.Services
     public class CustomerService
     {
         private readonly CustomerRepository _customerRepository;
-        private int _nextId = 1;
+        private int _nextId;
 
         public CustomerService(CustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
+
+            // Initialize _nextId based on existing customers
+            List<Customer> existingCustomers = _customerRepository.GetAll();
+
+            if (existingCustomers.Count > 0)
+            {
+                _nextId = existingCustomers.Max(c => c.Id) + 1;
+            }
+            else
+            {
+                _nextId = 1;
+            }
         }
 
         public Customer AddCustomer(string companyName, string contactPerson, string cvr, string email, string phone, CustomerStatus status)
