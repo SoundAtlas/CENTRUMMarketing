@@ -75,6 +75,21 @@ namespace CENTRUMMarketing.Core.Services
             return _taskRepository.GetById(id);
         }
 
+        public List<TaskItem> GetTasksByStatus(TaskItemStatus status)
+        {
+            List<TaskItem> results = new List<TaskItem>();
+
+            foreach (TaskItem task in _taskRepository.GetAll())
+            {
+                if (task.Status == status)
+                {
+                    results.Add(task);
+                }
+            }
+
+            return results;
+        }
+
         public bool UpdateTaskStatus(int taskId, TaskItemStatus newStatus)
         {
             TaskItem? task = _taskRepository.GetById(taskId);
@@ -100,6 +115,7 @@ namespace CENTRUMMarketing.Core.Services
             task.Deadline = newDeadline;
             return true;
         }
+
 
     }
 }

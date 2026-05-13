@@ -1,5 +1,6 @@
 ﻿using CENTRUMMarketing.App.Menus;
 using CENTRUMMarketing.App.UI;
+using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Repositories;
 using CENTRUMMarketing.Core.Services;
 
@@ -11,8 +12,6 @@ namespace CENTRUMMarketing.App
         {
 
 
-            //customerService.AddCustomer("Nordic Design", "Mikkel Sørensen", "123456", "BLABLA@GMAIL.COM", "88888888", CustomerStatus.Lead);
-            //customerService.AddCustomer("Nordic Design Studio", "Mikkel Hansen", "654321", "BLABLABLA@GMAIL.COM", "99999999", CustomerStatus.Active);
 
             CustomerRepository customerRepository = new CustomerRepository();
             TaskRepository taskRepository = new TaskRepository();
@@ -20,24 +19,30 @@ namespace CENTRUMMarketing.App
             CustomerService customerService = new CustomerService(customerRepository);
             TaskService taskService = new TaskService(taskRepository, customerRepository);
 
+            customerService.AddCustomer("Nordic Design", "Mikkel Sørensen", "123456", "BLABLA@GMAIL.COM", "88888888", CustomerStatus.Lead);
+            customerService.AddCustomer("Nordic Design Studio", "Mikkel Hansen", "654321", "BLABLABLA@GMAIL.COM", "99999999", CustomerStatus.Active);
+
             DashboardService dashboardService = new DashboardService(
                 customerRepository,
                 taskRepository);
 
             DashboardPrinter dashboardPrinter = new DashboardPrinter();
 
-            DashboardMenu dashboardMenu = new DashboardMenu(
-                dashboardService,
-                dashboardPrinter);
-
             CustomerMenu customerMenu = new CustomerMenu(customerService);
 
             TaskMenu taskMenu = new TaskMenu(taskService, customerService);
 
+            DashboardMenu dashboardMenu = new DashboardMenu(
+                dashboardService,
+                dashboardPrinter);
+
+            SearchMenu searchMenu = new SearchMenu(customerService, taskService);
+
             MainMenu mainMenu = new MainMenu(
                 customerMenu,
                 taskMenu,
-                dashboardMenu);
+                dashboardMenu,
+                searchMenu);
 
             mainMenu.ShowMainMenu();
         }

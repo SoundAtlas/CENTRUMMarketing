@@ -8,10 +8,12 @@ namespace CENTRUMMarketing.App.Menus
     {
         private readonly CustomerService _customerService;
         private readonly CustomerPrinter _customerPrinter;
+        private readonly TaskService _taskService;
 
-        public SearchMenu(CustomerService customerService)
+        public SearchMenu(CustomerService customerService, TaskService taskService)
         {
             _customerService = customerService;
+            _taskService = taskService;
             _customerPrinter = new CustomerPrinter();
         }
 
@@ -128,10 +130,19 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine($"TASKS WITH STATUS: {selectedStatus}");
             Console.WriteLine();
 
-            // TODO:
-            // Call TaskService to get tasks with selectedStatus
-            // Get tasks matching selectedStatus
-            // Print matching tasks with TaskPrinter
+            var tasks = _taskService.GetTasksByStatus(selectedStatus);
+
+            if (tasks.Count == 0)
+            {
+                Console.WriteLine("No tasks found with this status.");
+            }
+            else
+            {
+                foreach (var task in tasks)
+                {
+                    Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline.ToShortDateString()} | Status: {task.Status}");
+                }
+            }
 
             Pause();
         }
