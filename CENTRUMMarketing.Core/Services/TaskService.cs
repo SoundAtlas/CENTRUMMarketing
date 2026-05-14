@@ -129,6 +129,10 @@ namespace CENTRUMMarketing.Core.Services
 
         }
 
+        public void SaveChanges()
+        {
+            _taskRepository.Save();
+        }
 
     }
 }

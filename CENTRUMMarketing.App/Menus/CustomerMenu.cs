@@ -71,7 +71,8 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("3. Inactive");
             Console.WriteLine("4. Dormant");
 
-            string statusChoice = Console.ReadLine();
+            string? statusChoice = Console.ReadLine();
+
             CustomerStatus status = CustomerStatus.Active;
 
             switch (statusChoice)
@@ -139,7 +140,7 @@ namespace CENTRUMMarketing.App.Menus
                 return;
             }
 
-            Customer customer = _customerService.GetCustomerById(id);
+            Customer? customer = _customerService.GetCustomerById(id);
 
             if (customer != null)
             {
@@ -180,9 +181,8 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("2. Update Status");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
-                Console.Write("Choose an option: ");
 
-                string choice = Console.ReadLine();
+                string choice = InputHelpers.ReadRequiredString("Choose an option: ");
 
                 switch (choice)
                 {
@@ -224,9 +224,8 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("5. Phone");
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
-            Console.Write("Choose field to edit: ");
 
-            string choice = Console.ReadLine();
+            string choice = InputHelpers.ReadRequiredString("Choose field to edit: ");
 
             switch (choice)
             {
@@ -259,6 +258,8 @@ namespace CENTRUMMarketing.App.Menus
                     return;
             }
 
+            _customerService.SaveChanges();
+
             Console.WriteLine();
             Console.WriteLine($"Customer: {customer.CompanyName} has been updated.");
             Console.Write("Press any key to continue...");
@@ -278,29 +279,28 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("4. Dormant");
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
-            Console.Write("Choose new status: ");
 
-            string choice = Console.ReadLine();
+            int choice = InputHelpers.ReadInt("Choose new status: ");
 
             switch (choice)
             {
-                case "1":
+                case 1:
                     customer.Status = CustomerStatus.Lead;
                     break;
 
-                case "2":
+                case 2:
                     customer.Status = CustomerStatus.Active;
                     break;
 
-                case "3":
+                case 3:
                     customer.Status = CustomerStatus.Inactive;
                     break;
 
-                case "4":
+                case 4:
                     customer.Status = CustomerStatus.Dormant;
                     break;
 
-                case "0":
+                case 0:
                     return;
 
                 default:
@@ -308,6 +308,8 @@ namespace CENTRUMMarketing.App.Menus
                     Console.ReadKey();
                     return;
             }
+
+            _customerService.SaveChanges();
 
             Console.WriteLine();
             Console.WriteLine($"Status updated to: {customer.Status}");

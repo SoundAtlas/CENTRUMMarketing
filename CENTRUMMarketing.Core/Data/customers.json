@@ -166,5 +166,77 @@
     "LastActivityDate": "2026-05-13T17:51:18.2736233+02:00",
     "Tasks": [],
     "Id": 2
+  },
+  {
+    "CompanyName": "Nordic Design",
+    "ContactPerson": "Mikkel S\u00F8rensen",
+    "Cvr": "123456",
+    "Email": "BLABLA@GMAIL.COM",
+    "Phone": "88888888",
+    "Status": 0,
+    "InvoicingReady": false,
+    "LastActivityDate": "2026-05-14T15:59:39.1588217+02:00",
+    "Tasks": [],
+    "Id": 3
+  },
+  {
+    "CompanyName": "Nordic Design Studio",
+    "ContactPerson": "Mikkel Hansen",
+    "Cvr": "654321",
+    "Email": "BLABLABLA@GMAIL.COM",
+    "Phone": "99999999",
+    "Status": 3,
+    "InvoicingReady": false,
+    "LastActivityDate": "2026-05-14T15:59:39.1636091+02:00",
+    "Tasks": [],
+    "Id": 4
+  },
+  {
+    "CompanyName": "Nordic Design",
+    "ContactPerson": "Mikkel S\u00F8rensen",
+    "Cvr": "123456",
+    "Email": "BLABLA@GMAIL.COM",
+    "Phone": "88888888",
+    "Status": 0,
+    "InvoicingReady": false,
+    "LastActivityDate": "2026-05-14T15:59:49.2997129+02:00",
+    "Tasks": [],
+    "Id": 5
+  },
+  {
+    "CompanyName": "Nordic Design Studio",
+    "ContactPerson": "Mikkel Hansen",
+    "Cvr": "654321",
+    "Email": "BLABLABLA@GMAIL.COM",
+    "Phone": "99999999",
+    "Status": 3,
+    "InvoicingReady": false,
+    "LastActivityDate": "2026-05-14T15:59:49.3046956+02:00",
+    "Tasks": [],
+    "Id": 6
+  },
+  {
+    "CompanyName": "Nordic Design",
+    "ContactPerson": "Mikkel S\u00F8rensen",
+    "Cvr": "123456",
+    "Email": "BLABLA@GMAIL.COM",
+    "Phone": "88888888",
+    "Status": 0,
+    "InvoicingReady": false,
+    "LastActivityDate": "2026-05-14T16:00:57.1150086+02:00",
+    "Tasks": [],
+    "Id": 7
+  },
+  {
+    "CompanyName": "Nordic Design Studio",
+    "ContactPerson": "Mikkel Hansen",
+    "Cvr": "654321",
+    "Email": "BLABLABLA@GMAIL.COM",
+    "Phone": "99999999",
+    "Status": 3,
+    "InvoicingReady": false,
+    "LastActivityDate": "2026-05-14T16:00:57.1191043+02:00",
+    "Tasks": [],
+    "Id": 8
   }
 ]

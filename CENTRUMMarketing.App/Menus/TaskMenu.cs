@@ -34,9 +34,8 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("4. Update Task Status");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
-                Console.Write("Choose an option: ");
 
-                string choice = Console.ReadLine();
+                string choice = InputHelpers.ReadRequiredString("Choose an option: ");
 
                 switch (choice)
                 {
@@ -86,9 +85,8 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("2. In Progress");
             Console.WriteLine("3. Waiting Client");
             Console.WriteLine("4. Completed");
-            Console.Write("Choice: ");
 
-            string statusChoice = Console.ReadLine();
+            string statusChoice = InputHelpers.ReadRequiredString("Choice: ");
 
             TaskItemStatus status = TaskItemStatus.ToDo;
 
@@ -274,9 +272,8 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("3. Update Deadline");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
-                Console.Write("Choose an option: ");
 
-                string choice = Console.ReadLine();
+                string choice = InputHelpers.ReadRequiredString("Choose an option: ");
 
                 switch (choice)
                 {
@@ -315,9 +312,8 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("2. Description");
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
-            Console.Write("Choose field to edit: ");
 
-            string choice = Console.ReadLine();
+            string choice = InputHelpers.ReadRequiredString("Choose field to edit: ");
 
             switch (choice)
             {
@@ -338,6 +334,8 @@ namespace CENTRUMMarketing.App.Menus
                     return;
             }
 
+            _taskService.SaveChanges();
+
             Console.WriteLine();
             Console.WriteLine("Task updated successfully.");
             Console.Write("Press any key to continue...");
@@ -356,9 +354,8 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("4. Completed");
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
-            Console.Write("Choose new status: ");
 
-            string choice = Console.ReadLine();
+            string choice = InputHelpers.ReadRequiredString("Choose new status: ");
 
             TaskItemStatus newStatus;
 

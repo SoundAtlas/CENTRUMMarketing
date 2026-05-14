@@ -86,5 +86,10 @@ namespace CENTRUMMarketing.Core.Services
 
             return archivedCustomers;
         }
+
+        public void SaveChanges()
+        {
+            _customerRepository.Save();
+        }
     }
 }
