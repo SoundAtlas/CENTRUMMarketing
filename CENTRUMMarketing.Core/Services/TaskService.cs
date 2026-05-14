@@ -65,6 +65,11 @@ namespace CENTRUMMarketing.Core.Services
             _taskRepository.Add(task);
             customer.Tasks.Add(task);
 
+            customer.LastActivityDate = DateTime.Now;
+
+            _taskRepository.Save();
+            _customerRepository.Save();
+
             _nextId++;
 
             return task;
@@ -116,7 +121,9 @@ namespace CENTRUMMarketing.Core.Services
                     $"Task with ID {taskId} was not found.");
 
             task.Status = newStatus;
+
             _taskRepository.Save();
+            UpdateCustomerLastActivityDate(task.CustomerId);
         }
 
         public void UpdateTaskDeadline(int taskId, DateTime newDeadline)
@@ -124,9 +131,16 @@ namespace CENTRUMMarketing.Core.Services
             TaskItem? task = _taskRepository.GetById(taskId) ?? throw new EntityNotFoundException(
                     $"Task with ID {taskId} was not found.");
 
-            task.Deadline = newDeadline;
-            _taskRepository.Save();
+            if (newDeadline < DateTime.Now)
+            {
+                throw new InvalidDeadlineException(
+                    "Deadline cannot be in the past.");
+            }
 
+            task.Deadline = newDeadline;
+
+            _taskRepository.Save();
+            UpdateCustomerLastActivityDate(task.CustomerId);
         }
 
         public void AssignCollaboratorToTask(TaskItem task, int collaboratorId)
@@ -145,5 +159,18 @@ namespace CENTRUMMarketing.Core.Services
             _taskRepository.Save();
         }
 
+        private void UpdateCustomerLastActivityDate(int customerId)
+        {
+            Customer? customer = _customerRepository.GetById(customerId);
+
+            if (customer == null)
+            {
+                throw new EntityNotFoundException(
+                    $"Customer with ID {customerId} not found.");
+            }
+
+            customer.LastActivityDate = DateTime.Now;
+            _customerRepository.Save();
+        }
     }
 }
