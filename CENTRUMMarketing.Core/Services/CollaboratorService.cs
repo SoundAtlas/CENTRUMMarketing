@@ -1,4 +1,6 @@
-﻿using CENTRUMMarketing.Core.Models;
+﻿using CENTRUMMarketing.Core.Exceptions;
+using CENTRUMMarketing.Core.Interfaces;
+using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Repositories;
 
 namespace CENTRUMMarketing.Core.Services
@@ -6,10 +8,14 @@ namespace CENTRUMMarketing.Core.Services
     public class CollaboratorService
     {
         private readonly CollaboratorRepository _collaboratorRepository;
+        private readonly ITaskRepository _taskRepository;
 
-        public CollaboratorService(CollaboratorRepository collaboratorRepository)
+        public CollaboratorService(
+            CollaboratorRepository collaboratorRepository,
+            ITaskRepository taskRepository)
         {
             _collaboratorRepository = collaboratorRepository;
+            _taskRepository = taskRepository;
         }
 
 
@@ -35,6 +41,32 @@ namespace CENTRUMMarketing.Core.Services
         public List<Collaborator> GetAllCollaborators()
         {
             return _collaboratorRepository.GetAll();
+        }
+
+        public void DeleteCollaborator(int collaboratorId)
+        {
+            Collaborator? collaborator = _collaboratorRepository.GetById(collaboratorId);
+
+            if (collaborator == null)
+            {
+                throw new EntityNotFoundException(
+                    $"Collaborator with ID {collaboratorId} was not found.");
+            }
+
+            foreach (TaskItem task in _taskRepository.GetAll())
+            {
+                if (task.CollaboratorIds.Contains(collaboratorId)) task.CollaboratorIds.Remove(collaboratorId);
+            }
+
+            _taskRepository.Save();
+
+            bool deleted = _collaboratorRepository.Delete(collaboratorId);
+
+            if (!deleted)
+            {
+                throw new EntityNotFoundException(
+                    $"Collaborator with ID {collaboratorId} was not found.");
+            }
         }
 
         public void SaveChanges()
