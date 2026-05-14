@@ -65,12 +65,14 @@
         {
             Console.Clear();
             Console.WriteLine("=======================================");
-            Console.WriteLine($"         {title.ToUpper()}            ");
+            Console.WriteLine($"{title.ToUpper()}");
             Console.WriteLine("=======================================");
+
         }
 
         public static void Pause()
         {
+            Console.WriteLine();
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }

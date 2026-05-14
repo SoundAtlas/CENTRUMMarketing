@@ -9,7 +9,7 @@ namespace CENTRUMMarketing.Core.Models
         public string Description { get; set; }
         public DateTime Deadline { get; set; }
         public TaskItemStatus Status { get; set; }
-        public int? CollaboratorId { get; set; }
+        public List<int> CollaboratorIds { get; set; }
 
 
         public TaskItem(
@@ -25,6 +25,7 @@ namespace CENTRUMMarketing.Core.Models
             Description = description;
             Deadline = deadline;
             Status = status;
+            CollaboratorIds = new List<int>();
         }
 
         public void UpdateStatus(TaskItemStatus newStatus)

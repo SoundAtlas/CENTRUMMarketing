@@ -248,6 +248,23 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine($"Description: {task.Description}");
                 Console.WriteLine($"Deadline: {task.Deadline.ToShortDateString()}");
                 Console.WriteLine($"Status: {task.Status}");
+
+                Console.Write("Collaborators: ");
+
+                bool hasCollaborators = false;
+
+                foreach (Collaborator collaborator in _collaboratorService.GetAllCollaborators())
+                {
+                    if (task.CollaboratorIds.Contains(collaborator.Id))
+                    {
+                        Console.WriteLine($"{collaborator.Name}");
+                        hasCollaborators = true;
+                    }
+                }
+
+                if (!hasCollaborators)
+                    Console.WriteLine("None");
+
                 Console.WriteLine("=======================================");
                 Console.WriteLine("1. Edit Task");
                 Console.WriteLine("2. Update Status");
@@ -423,9 +440,22 @@ namespace CENTRUMMarketing.App.Menus
                 return;
             }
 
+            bool availableCollaborators = false;
+
             foreach (Collaborator c in collaborators)
             {
-                Console.WriteLine($"{c.Id}. {c.Name}");
+                if (!task.CollaboratorIds.Contains(c.Id))
+                {
+                    Console.WriteLine($"{c.Id}. {c.Name}");
+                    availableCollaborators = true;
+                }
+            }
+
+            if (!availableCollaborators)
+            {
+                Console.WriteLine("All collaborators are already assigned to this task.");
+                ConsoleHelpers.Pause();
+                return;
             }
 
             Console.WriteLine();
