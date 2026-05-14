@@ -6,7 +6,7 @@
         {
             while (true)
             {
-                Console.WriteLine(prompt);
+                Console.Write(prompt);
 
                 bool success = int.TryParse(Console.ReadLine(), out int result);
 
@@ -52,6 +52,8 @@
                 Console.WriteLine("Input cannot be empty.");
             }
         }
+
+
 
     }
 }

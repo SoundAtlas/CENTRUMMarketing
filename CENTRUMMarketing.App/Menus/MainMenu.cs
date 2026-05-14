@@ -6,18 +6,21 @@
         private readonly TaskMenu _taskMenu;
         private readonly DashboardMenu _dashboardMenu;
         private readonly SearchMenu _searchMenu;
+        private readonly CollaboratorMenu _collaboratorMenu;
 
 
         public MainMenu(
             CustomerMenu customerMenu,
             TaskMenu taskMenu,
             DashboardMenu dashboardMenu,
-            SearchMenu searchMenu)
+            SearchMenu searchMenu,
+            CollaboratorMenu collaboratorMenu)
         {
             _customerMenu = customerMenu;
             _taskMenu = taskMenu;
             _dashboardMenu = dashboardMenu;
             _searchMenu = searchMenu;
+            _collaboratorMenu = collaboratorMenu;
         }
 
         public void ShowMainMenu()
@@ -26,6 +29,7 @@
             {
                 "Customer Management",
                 "Task Management",
+                "Collaborator Management",
                 "Dashboard",
                 "Search and Filter",
                 "Exit"
@@ -50,14 +54,18 @@
                         break;
 
                     case 2:
-                        _dashboardMenu.ShowDashboard();
+                        _collaboratorMenu.ShowCollaboratorMenu();
                         break;
 
                     case 3:
-                        _searchMenu.ShowSearchMenu();
+                        _dashboardMenu.ShowDashboard();
                         break;
 
                     case 4:
+                        _searchMenu.ShowSearchMenu();
+                        break;
+
+                    case 5:
                     case null:
                         running = false;
                         break;

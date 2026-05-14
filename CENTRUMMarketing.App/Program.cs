@@ -1,8 +1,8 @@
 ﻿using CENTRUMMarketing.App.Menus;
 using CENTRUMMarketing.App.UI;
-using CENTRUMMarketing.Core.Enums;
 using CENTRUMMarketing.Core.Repositories;
 using CENTRUMMarketing.Core.Services;
+
 
 namespace CENTRUMMarketing.App
 {
@@ -11,18 +11,13 @@ namespace CENTRUMMarketing.App
         static void Main(string[] args)
         {
 
-
-
             CustomerRepository customerRepository = new CustomerRepository();
             TaskRepository taskRepository = new TaskRepository();
+            CollaboratorRepository collaboratorRepository = new CollaboratorRepository();
 
             CustomerService customerService = new CustomerService(customerRepository);
             TaskService taskService = new TaskService(taskRepository, customerRepository);
-
-            customerService.AddCustomer("Nordic Design", "Mikkel Sørensen", "123456", "BLABLA@GMAIL.COM", "88888888", CustomerStatus.Lead);
-            var archivedCustomer = customerService.AddCustomer("Nordic Design Studio", "Mikkel Hansen", "654321", "BLABLABLA@GMAIL.COM", "99999999", CustomerStatus.Dormant);
-
-            archivedCustomer.LastActivityDate = DateTime.Now.AddDays(-40);
+            CollaboratorService collaboratorService = new CollaboratorService(collaboratorRepository);
 
             DashboardService dashboardService = new DashboardService(
                 customerRepository,
@@ -32,7 +27,8 @@ namespace CENTRUMMarketing.App
 
             CustomerMenu customerMenu = new CustomerMenu(customerService);
 
-            TaskMenu taskMenu = new TaskMenu(taskService, customerService);
+            TaskMenu taskMenu = new TaskMenu(taskService, customerService, collaboratorService);
+            CollaboratorMenu collaboratorMenu = new CollaboratorMenu(collaboratorService);
 
             DashboardMenu dashboardMenu = new DashboardMenu(
                 dashboardService,
@@ -44,9 +40,12 @@ namespace CENTRUMMarketing.App
                 customerMenu,
                 taskMenu,
                 dashboardMenu,
-                searchMenu);
+                searchMenu,
+                collaboratorMenu);
 
             mainMenu.ShowMainMenu();
+
+
         }
     }
 }

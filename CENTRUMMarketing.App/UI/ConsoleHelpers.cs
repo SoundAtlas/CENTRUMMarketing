@@ -4,6 +4,7 @@
     {
         public static int? Navigation(string title, string[] options)
         {
+
             Console.Clear();
             int selected = 0;
             Console.CursorVisible = false;
@@ -58,6 +59,22 @@
                     return selected;
                 }
             }
+        }
+
+        public static void Headers(string title)
+        {
+            Console.Clear();
+            Console.WriteLine("=======================================");
+            Console.WriteLine($"{title.ToUpper()}");
+            Console.WriteLine("=======================================");
+
+        }
+
+        public static void Pause()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
     }
 }
