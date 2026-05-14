@@ -127,7 +127,7 @@ namespace CENTRUMMarketing.App.Menus
             {
                 foreach (var c in customers)
                 {
-                    Console.WriteLine($"{c.Id}. {c.CompanyName} - {c.ContactPerson} - {c.Status} ");
+                    Console.WriteLine($"{c.Id}. {c.CompanyName} - {c.ContactPerson} - {c.Status} - Invoicing Ready: {(c.InvoicingReady ? "Yes" : "No")}");
                 }
             }
 
@@ -176,9 +176,11 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine($"Email: {customer.Email}");
                 Console.WriteLine($"Phone: {customer.Phone}");
                 Console.WriteLine($"Status: {customer.Status}");
+                Console.WriteLine($"Invoicing ready: {(customer.InvoicingReady ? "Yes" : "No")}");
                 Console.WriteLine("=======================================");
                 Console.WriteLine("1. Edit Customer");
                 Console.WriteLine("2. Update Status");
+                Console.WriteLine("3. Toggle Invoicing Ready");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
 
@@ -192,6 +194,12 @@ namespace CENTRUMMarketing.App.Menus
 
                     case "2":
                         UpdateCustomerStatusFlow(customer);
+                        break;
+
+                    case "3":
+                        customer.InvoicingReady = !customer.InvoicingReady;
+                        _customerService.SaveChanges();
+                        Console.WriteLine();
                         break;
 
                     case "0":

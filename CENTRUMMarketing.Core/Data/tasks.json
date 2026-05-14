@@ -1,10 +1,10 @@
 [
   {
     "CustomerId": 1,
-    "Title": "12312",
-    "Description": "123",
-    "Deadline": "2027-01-01T00:00:00",
-    "Status": 1,
+    "Title": "Tester",
+    "Description": "test",
+    "Deadline": "2026-05-15T00:00:00",
+    "Status": 0,
     "Id": 1
   }
 ]

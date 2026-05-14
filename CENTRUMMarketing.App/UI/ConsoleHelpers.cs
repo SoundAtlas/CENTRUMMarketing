@@ -4,6 +4,7 @@
     {
         public static int? Navigation(string title, string[] options)
         {
+
             Console.Clear();
             int selected = 0;
             Console.CursorVisible = false;
