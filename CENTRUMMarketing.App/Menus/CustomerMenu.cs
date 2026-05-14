@@ -68,8 +68,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("Choose customer status: ");
             Console.WriteLine("1. Lead");
             Console.WriteLine("2. Active");
-            Console.WriteLine("3. Inactive");
-            Console.WriteLine("4. Dormant");
+            Console.WriteLine("3. Dormant");
 
             string? statusChoice = Console.ReadLine();
 
@@ -84,9 +83,6 @@ namespace CENTRUMMarketing.App.Menus
                     status = CustomerStatus.Active;
                     break;
                 case "3":
-                    status = CustomerStatus.Inactive;
-                    break;
-                case "4":
                     status = CustomerStatus.Dormant;
                     break;
                 default:
@@ -269,8 +265,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine("1. Lead");
             Console.WriteLine("2. Active");
-            Console.WriteLine("3. Inactive");
-            Console.WriteLine("4. Dormant");
+            Console.WriteLine("3. Dormant");
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
 
@@ -287,10 +282,6 @@ namespace CENTRUMMarketing.App.Menus
                     break;
 
                 case 3:
-                    customer.Status = CustomerStatus.Inactive;
-                    break;
-
-                case 4:
                     customer.Status = CustomerStatus.Dormant;
                     break;
 

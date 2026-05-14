@@ -4,7 +4,6 @@
     {
         Lead,
         Active,
-        Inactive,
         Dormant
     }
 }

@@ -41,8 +41,7 @@ namespace CENTRUMMarketing.Core.Models
 
         public bool IsArchived()
         {
-            return (Status == CustomerStatus.Dormant || Status == CustomerStatus.Inactive) &&
-                LastActivityDate <= DateTime.Now.AddDays(-30);
+            return Status == CustomerStatus.Dormant && LastActivityDate <= DateTime.Now.AddDays(-30);
         }
 
     }
