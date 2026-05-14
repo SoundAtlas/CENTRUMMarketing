@@ -270,6 +270,7 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("2. Update Status");
                 Console.WriteLine("3. Update Deadline");
                 Console.WriteLine("4. Assign Collaborator");
+                Console.WriteLine("5. Delete Task");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
 
@@ -291,6 +292,13 @@ namespace CENTRUMMarketing.App.Menus
 
                     case 4:
                         AssignCollaboratorFlow(task);
+                        break;
+
+                    case 5:
+                        if (DeleteTaskFlow(task))
+                        {
+                            inDetailsMenu = false;
+                        }
                         break;
 
                     case 0:
@@ -425,6 +433,48 @@ namespace CENTRUMMarketing.App.Menus
 
             ConsoleHelpers.Pause();
 
+        }
+
+        private bool DeleteTaskFlow(TaskItem task)
+        {
+            ConsoleHelpers.Headers("DELETE TASK");
+
+            Console.WriteLine($"ID: {task.Id}");
+            Console.WriteLine($"Title: {task.Title}");
+            Console.WriteLine($"Deadline: {task.Deadline:d}");
+            Console.WriteLine($"Status: {task.Status}");
+            Console.WriteLine("=======================================");
+            Console.WriteLine("This action cannot be undone.");
+            Console.WriteLine();
+
+            string confirmation = InputHelpers.ReadRequiredString("Type DELETE to confirm: ");
+
+            if (!confirmation.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine();
+                Console.WriteLine("Deletion cancelled.");
+                ConsoleHelpers.Pause();
+                return false;
+            }
+
+            try
+            {
+                _taskService.DeleteTask(task.Id);
+
+                Console.WriteLine();
+                Console.WriteLine("Task deleted successfully.");
+                ConsoleHelpers.Pause();
+
+                return true;
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                ConsoleHelpers.Pause();
+
+                return false;
+            }
         }
 
         private void AssignCollaboratorFlow(TaskItem task)

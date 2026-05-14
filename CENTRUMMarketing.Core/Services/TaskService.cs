@@ -115,6 +115,35 @@ namespace CENTRUMMarketing.Core.Services
             return results;
         }
 
+        public void DeleteTask(int taskId)
+        {
+            TaskItem? task = _taskRepository.GetById(taskId);
+            
+            if (task == null)
+
+            {
+                throw new EntityNotFoundException(
+                    $"Task with ID {taskId} was not found.");
+            }
+
+            bool deleted = _taskRepository.Delete(taskId);
+
+            if (!deleted)
+            {
+                throw new EntityNotFoundException(
+                    $"Task with ID {taskId} was not found.");
+            }
+
+            Customer? customer = _customerRepository.GetById(task.CustomerId);
+
+            if (customer != null)
+            {
+                customer.Tasks.RemoveAll(t => t.Id == taskId);
+                customer.LastActivityDate = DateTime.Now;
+                _customerRepository.Save();
+            }
+        }
+
         public void UpdateTaskStatus(int taskId, TaskItemStatus newStatus)
         {
             TaskItem? task = _taskRepository.GetById(taskId) ?? throw new EntityNotFoundException(

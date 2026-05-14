@@ -35,6 +35,15 @@ namespace CENTRUMMarketing.Core.Repositories
             return null;
         }
 
+        public bool Delete(int id)
+        {
+            TaskItem? task = GetById(id);
+
+            if (task == null) return false;
+
+            return _jsonRepository.Remove(task);
+        }
+
         public void Save()
         {
             _jsonRepository.Save();

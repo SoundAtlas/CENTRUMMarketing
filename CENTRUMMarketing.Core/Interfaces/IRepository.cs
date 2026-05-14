@@ -1,6 +1,4 @@
-﻿
-
-namespace CENTRUMMarketing.Core.Interfaces
+﻿namespace CENTRUMMarketing.Core.Interfaces
 {
     public interface IRepository<T>
     {

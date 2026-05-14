@@ -26,6 +26,15 @@ namespace CENTRUMMarketing.Core.Repositories
             Save();
         }
 
+        public bool Remove(T item)
+        {
+            bool removed = _items.Remove(item);
+            
+            if (removed) Save();
+
+            return removed;
+        }
+
         public void Save()
         {
 
