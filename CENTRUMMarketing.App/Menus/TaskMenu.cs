@@ -10,11 +10,13 @@ namespace CENTRUMMarketing.App.Menus
     {
         private TaskService _taskService;
         private CustomerService _customerService;
+        private CollaboratorService _collaboratorService;
 
-        public TaskMenu(TaskService taskService, CustomerService customerService)
+        public TaskMenu(TaskService taskService, CustomerService customerService, CollaboratorService collaboratorService)
         {
             _taskService = taskService;
             _customerService = customerService;
+            _collaboratorService = collaboratorService;
         }
 
         public void ShowTaskMenu()
@@ -31,27 +33,26 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("1. Add Task");
                 Console.WriteLine("2. View All Tasks");
                 Console.WriteLine("3. View Tasks By Customer");
-                Console.WriteLine("4. Update Task Status");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
 
-                string choice = InputHelpers.ReadRequiredString("Choose an option: ");
+                int choice = InputHelpers.ReadInt("Choose an option: ");
 
                 switch (choice)
                 {
-                    case "1":
+                    case 1:
                         AddTaskFlow();
                         break;
 
-                    case "2":
+                    case 2:
                         ViewAllTasksFlow();
                         break;
 
-                    case "3":
+                    case 3:
                         ViewTasksByCustomerFlow();
                         break;
 
-                    case "0":
+                    case 0:
                         inTaskMenu = false;
                         break;
 
@@ -86,22 +87,22 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("3. Waiting Client");
             Console.WriteLine("4. Completed");
 
-            string statusChoice = InputHelpers.ReadRequiredString("Choice: ");
+            int statusChoice = InputHelpers.ReadInt("Choice: ");
 
             TaskItemStatus status = TaskItemStatus.ToDo;
 
             switch (statusChoice)
             {
-                case "1":
+                case 1:
                     status = TaskItemStatus.ToDo;
                     break;
-                case "2":
+                case 2:
                     status = TaskItemStatus.InProgress;
                     break;
-                case "3":
+                case 3:
                     status = TaskItemStatus.WaitingClient;
                     break;
-                case "4":
+                case 4:
                     status = TaskItemStatus.Completed;
                     break;
                 default:
@@ -135,8 +136,7 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine(ex.Message);
             }
 
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
 
         }
 
@@ -189,8 +189,7 @@ namespace CENTRUMMarketing.App.Menus
             else
             {
                 Console.WriteLine("Task not found.");
-                Console.Write("Press any key to continue...");
-                Console.ReadKey();
+                InputHelpers.Pause();
             }
 
         }
@@ -210,8 +209,7 @@ namespace CENTRUMMarketing.App.Menus
             if (customer == null)
             {
                 Console.WriteLine("Customer not found.");
-                Console.Write("Press any key to continue...");
-                Console.ReadKey();
+                InputHelpers.Pause();
                 return;
             }
 
@@ -235,8 +233,7 @@ namespace CENTRUMMarketing.App.Menus
             }
 
             Console.WriteLine("=======================================");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
         }
 
 
@@ -270,26 +267,31 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("1. Edit Task");
                 Console.WriteLine("2. Update Status");
                 Console.WriteLine("3. Update Deadline");
+                Console.WriteLine("4. Assign Collaborator");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
 
-                string choice = InputHelpers.ReadRequiredString("Choose an option: ");
+                int choice = InputHelpers.ReadInt("Choose an option: ");
 
                 switch (choice)
                 {
-                    case "1":
+                    case 1:
                         EditTaskFlow(task);
                         break;
 
-                    case "2":
+                    case 2:
                         UpdateTaskItemStatusFlow(task);
                         break;
 
-                    case "3":
+                    case 3:
                         UpdateTaskDeadlineFlow(task);
                         break;
 
-                    case "0":
+                    case 4:
+                        AssignCollaboratorFlow(task);
+                        break;
+
+                    case 0:
                         inDetailsMenu = false;
                         break;
 
@@ -313,19 +315,19 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
 
-            string choice = InputHelpers.ReadRequiredString("Choose field to edit: ");
+            int choice = InputHelpers.ReadInt("Choose field to edit: ");
 
             switch (choice)
             {
-                case "1":
+                case 1:
                     task.Title = InputHelpers.ReadRequiredString("Enter new title: ");
                     break;
 
-                case "2":
+                case 2:
                     task.Description = InputHelpers.ReadRequiredString("Enter new description: ");
                     break;
 
-                case "0":
+                case 0:
                     return;
 
                 default:
@@ -338,8 +340,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine("Task updated successfully.");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
         }
 
         private void UpdateTaskItemStatusFlow(TaskItem task)
@@ -355,29 +356,29 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
 
-            string choice = InputHelpers.ReadRequiredString("Choose new status: ");
+            int choice = InputHelpers.ReadInt("Choose new status: ");
 
             TaskItemStatus newStatus;
 
             switch (choice)
             {
-                case "1":
+                case 1:
                     newStatus = TaskItemStatus.ToDo;
                     break;
 
-                case "2":
+                case 2:
                     newStatus = TaskItemStatus.InProgress;
                     break;
 
-                case "3":
+                case 3:
                     newStatus = TaskItemStatus.WaitingClient;
                     break;
 
-                case "4":
+                case 4:
                     newStatus = TaskItemStatus.Completed;
                     break;
 
-                case "0":
+                case 0:
                     return;
 
                 default:
@@ -398,8 +399,7 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine(ex.Message);
             }
 
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
         }
 
         private void UpdateTaskDeadlineFlow(TaskItem task)
@@ -432,10 +432,60 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine(ex.Message);
             }
 
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
 
         }
+
+        private void AssignCollaboratorFlow(TaskItem task)
+        {
+            Console.Clear();
+            Console.WriteLine("=======================================");
+            Console.WriteLine("         ASSIGN COLLABORATOR           ");
+            Console.WriteLine("=======================================");
+
+            List<Collaborator> collaborators = _collaboratorService.GetAllCollaborators();
+
+            if (collaborators.Count == 0)
+            {
+                Console.WriteLine("No collaborators found.");
+                InputHelpers.Pause();
+                return;
+            }
+
+            foreach (Collaborator c in collaborators)
+            {
+                Console.WriteLine($"{c.Id}. {c.Name}");
+            }
+
+            Console.WriteLine();
+
+            int collaboratorId = InputHelpers.ReadInt("Enter collaborator ID to assign: ");
+
+            Collaborator? collaborator = null;
+
+            foreach (Collaborator c in collaborators)
+            {
+                if (c.Id == collaboratorId)
+                {
+                    collaborator = c;
+                    break;
+                }
+            }
+
+            if (collaborator == null)
+            {
+                Console.WriteLine("Collaborator not found.");
+                InputHelpers.Pause();
+                return;
+            }
+
+            _taskService.AssignCollaboratorToTask(task, collaboratorId);
+
+            Console.WriteLine($"Assigned {collaborator.Name} to {task.Title}");
+            InputHelpers.Pause();
+
+        }
+
     }
 }
 

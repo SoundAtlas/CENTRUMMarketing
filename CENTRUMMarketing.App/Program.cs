@@ -13,9 +13,11 @@ namespace CENTRUMMarketing.App
 
             CustomerRepository customerRepository = new CustomerRepository();
             TaskRepository taskRepository = new TaskRepository();
+            CollaboratorRepository collaboratorRepository = new CollaboratorRepository();
 
             CustomerService customerService = new CustomerService(customerRepository);
             TaskService taskService = new TaskService(taskRepository, customerRepository);
+            CollaboratorService collaboratorService = new CollaboratorService(collaboratorRepository);
 
             DashboardService dashboardService = new DashboardService(
                 customerRepository,
@@ -25,7 +27,8 @@ namespace CENTRUMMarketing.App
 
             CustomerMenu customerMenu = new CustomerMenu(customerService);
 
-            TaskMenu taskMenu = new TaskMenu(taskService, customerService);
+            TaskMenu taskMenu = new TaskMenu(taskService, customerService, collaboratorService);
+            CollaboratorMenu collaboratorMenu = new CollaboratorMenu(collaboratorService);
 
             DashboardMenu dashboardMenu = new DashboardMenu(
                 dashboardService,
@@ -37,7 +40,8 @@ namespace CENTRUMMarketing.App
                 customerMenu,
                 taskMenu,
                 dashboardMenu,
-                searchMenu);
+                searchMenu,
+                collaboratorMenu);
 
             mainMenu.ShowMainMenu();
 

@@ -129,6 +129,12 @@ namespace CENTRUMMarketing.Core.Services
 
         }
 
+        public void AssignCollaboratorToTask(TaskItem task, int collaboratorId)
+        {
+            task.CollaboratorId = collaboratorId;
+            _taskRepository.Save();
+        }
+
         public void SaveChanges()
         {
             _taskRepository.Save();

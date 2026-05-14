@@ -9,6 +9,7 @@ namespace CENTRUMMarketing.Core.Models
         public string Description { get; set; }
         public DateTime Deadline { get; set; }
         public TaskItemStatus Status { get; set; }
+        public int? CollaboratorId { get; set; }
 
 
         public TaskItem(

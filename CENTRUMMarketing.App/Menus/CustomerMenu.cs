@@ -105,8 +105,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Customer added: {customer.CompanyName}");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
         }
 
         private void ViewCustomersFlow()
@@ -149,8 +148,7 @@ namespace CENTRUMMarketing.App.Menus
             else
             {
                 Console.WriteLine("Customer not found");
-                Console.Write("Press any key to continue...");
-                Console.ReadKey();
+                InputHelpers.Pause();
             }
 
             Console.WriteLine("=======================================");
@@ -270,8 +268,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Customer: {customer.CompanyName} has been updated.");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
         }
 
         private void UpdateCustomerStatusFlow(Customer customer)
@@ -321,8 +318,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Status updated to: {customer.Status}");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            InputHelpers.Pause();
         }
     }
 }
