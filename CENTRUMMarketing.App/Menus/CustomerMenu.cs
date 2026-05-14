@@ -52,7 +52,7 @@ namespace CENTRUMMarketing.App.Menus
 
         private void AddCustomerFlow()
         {
-            Console.Clear();
+            ConsoleHelpers.Headers("ADD NEW CUSTOMER");
 
             string companyName = InputHelpers.ReadRequiredString("Company name: ");
 
@@ -71,7 +71,8 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("3. Inactive");
             Console.WriteLine("4. Dormant");
 
-            string statusChoice = Console.ReadLine();
+            string? statusChoice = Console.ReadLine();
+
             CustomerStatus status = CustomerStatus.Active;
 
             switch (statusChoice)
@@ -104,19 +105,16 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Customer added: {customer.CompanyName}");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            ConsoleHelpers.Pause();
         }
 
         private void ViewCustomersFlow()
         {
-            Console.Clear();
+
 
             List<Customer> customers = _customerService.GetAllCustomers();
 
-            Console.WriteLine("=======================================");
-            Console.WriteLine("             ALL CUSTOMERS             ");
-            Console.WriteLine("=======================================");
+            ConsoleHelpers.Headers("ALL CUSTOMERS");
 
             if (customers.Count == 0)
             {
@@ -126,7 +124,7 @@ namespace CENTRUMMarketing.App.Menus
             {
                 foreach (var c in customers)
                 {
-                    Console.WriteLine($"{c.Id}. {c.CompanyName} - {c.ContactPerson} - {c.Status} ");
+                    Console.WriteLine($"{c.Id}. {c.CompanyName} - {c.ContactPerson} - {c.Status} - Invoicing Ready: {(c.InvoicingReady ? "Yes" : "No")}");
                 }
             }
 
@@ -139,7 +137,7 @@ namespace CENTRUMMarketing.App.Menus
                 return;
             }
 
-            Customer customer = _customerService.GetCustomerById(id);
+            Customer? customer = _customerService.GetCustomerById(id);
 
             if (customer != null)
             {
@@ -148,8 +146,7 @@ namespace CENTRUMMarketing.App.Menus
             else
             {
                 Console.WriteLine("Customer not found");
-                Console.Write("Press any key to continue...");
-                Console.ReadKey();
+                ConsoleHelpers.Pause();
             }
 
             Console.WriteLine("=======================================");
@@ -163,11 +160,8 @@ namespace CENTRUMMarketing.App.Menus
 
             while (inDetailsMenu)
             {
-                Console.Clear();
+                ConsoleHelpers.Headers($"Customer: {customer.CompanyName}");
 
-                Console.WriteLine("=======================================");
-                Console.WriteLine($"    CUSTOMER DETAILS - {customer.CompanyName}");
-                Console.WriteLine("=======================================");
                 Console.WriteLine($"ID: {customer.Id}");
                 Console.WriteLine($"Company Name: {customer.CompanyName}");
                 Console.WriteLine($"Contact Person: {customer.ContactPerson}");
@@ -175,14 +169,15 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine($"Email: {customer.Email}");
                 Console.WriteLine($"Phone: {customer.Phone}");
                 Console.WriteLine($"Status: {customer.Status}");
+                Console.WriteLine($"Invoicing ready: {(customer.InvoicingReady ? "Yes" : "No")}");
                 Console.WriteLine("=======================================");
                 Console.WriteLine("1. Edit Customer");
                 Console.WriteLine("2. Update Status");
+                Console.WriteLine("3. Toggle Invoicing Ready");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
-                Console.Write("Choose an option: ");
 
-                string choice = Console.ReadLine();
+                string choice = InputHelpers.ReadRequiredString("Choose an option: ");
 
                 switch (choice)
                 {
@@ -192,6 +187,12 @@ namespace CENTRUMMarketing.App.Menus
 
                     case "2":
                         UpdateCustomerStatusFlow(customer);
+                        break;
+
+                    case "3":
+                        customer.InvoicingReady = !customer.InvoicingReady;
+                        _customerService.SaveChanges();
+                        Console.WriteLine();
                         break;
 
                     case "0":
@@ -212,11 +213,8 @@ namespace CENTRUMMarketing.App.Menus
 
         private void EditCustomerFlow(Customer customer)
         {
-            Console.Clear();
+            ConsoleHelpers.Headers($"EDIT CUSTOMER: {customer.CompanyName}");
 
-            Console.WriteLine("=======================================");
-            Console.WriteLine("             EDIT CUSTOMER             ");
-            Console.WriteLine("=======================================");
             Console.WriteLine("1. Company Name");
             Console.WriteLine("2. Contact Person");
             Console.WriteLine("3. CVR");
@@ -224,9 +222,8 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("5. Phone");
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
-            Console.Write("Choose field to edit: ");
 
-            string choice = Console.ReadLine();
+            string choice = InputHelpers.ReadRequiredString("Choose field to edit: ");
 
             switch (choice)
             {
@@ -259,48 +256,45 @@ namespace CENTRUMMarketing.App.Menus
                     return;
             }
 
+            _customerService.SaveChanges();
+
             Console.WriteLine();
             Console.WriteLine($"Customer: {customer.CompanyName} has been updated.");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            ConsoleHelpers.Pause();
         }
 
         private void UpdateCustomerStatusFlow(Customer customer)
         {
-            Console.Clear();
+            ConsoleHelpers.Headers($"UPDATE STATUS: {customer.CompanyName}");
 
-            Console.WriteLine("=======================================");
-            Console.WriteLine("        UPDATE CUSTOMER STATUS         ");
-            Console.WriteLine("=======================================");
             Console.WriteLine("1. Lead");
             Console.WriteLine("2. Active");
             Console.WriteLine("3. Inactive");
             Console.WriteLine("4. Dormant");
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
-            Console.Write("Choose new status: ");
 
-            string choice = Console.ReadLine();
+            int choice = InputHelpers.ReadInt("Choose new status: ");
 
             switch (choice)
             {
-                case "1":
+                case 1:
                     customer.Status = CustomerStatus.Lead;
                     break;
 
-                case "2":
+                case 2:
                     customer.Status = CustomerStatus.Active;
                     break;
 
-                case "3":
+                case 3:
                     customer.Status = CustomerStatus.Inactive;
                     break;
 
-                case "4":
+                case 4:
                     customer.Status = CustomerStatus.Dormant;
                     break;
 
-                case "0":
+                case 0:
                     return;
 
                 default:
@@ -309,10 +303,11 @@ namespace CENTRUMMarketing.App.Menus
                     return;
             }
 
+            _customerService.SaveChanges();
+
             Console.WriteLine();
             Console.WriteLine($"Status updated to: {customer.Status}");
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
+            ConsoleHelpers.Pause();
         }
     }
 }

@@ -54,10 +54,24 @@ namespace CENTRUMMarketing.Core.Repositories
             {
                 if (!File.Exists(_filePath))
                 {
-                    return new List<T>();
+                    List<T> emptyList = new List<T>();
+
+                    string emptyJson = JsonSerializer.Serialize(emptyList, new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    });
+
+                    File.WriteAllText(_filePath, emptyJson);
+
+                    return emptyList;
                 }
 
                 string json = File.ReadAllText(_filePath);
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    return new List<T>();
+                }
 
                 List<T>? loadedItems = JsonSerializer.Deserialize<List<T>>(json);
 
