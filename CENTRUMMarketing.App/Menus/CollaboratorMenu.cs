@@ -1,4 +1,4 @@
-﻿using CENTRUMMarketing.App.Helpers;
+﻿using CENTRUMMarketing.App.UI;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
 
@@ -49,11 +49,7 @@ namespace CENTRUMMarketing.App.Menus
 
         private void AddCollaboratorFlow()
         {
-            Console.Clear();
-
-            Console.WriteLine("=======================================");
-            Console.WriteLine("            ADD COLLABORATOR           ");
-            Console.WriteLine("=======================================");
+            ConsoleHelpers.Headers("ADD NEW COLLABORATOR");
 
             string name = Helpers.InputHelpers.ReadRequiredString("Enter collaborator's name: ");
 
@@ -65,15 +61,13 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Collaborator added with ID: {collaborator.Id}");
-            InputHelpers.Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void ViewAllCollaboratorsFlow()
         {
-            Console.Clear();
-            Console.WriteLine("=======================================");
-            Console.WriteLine("          ALL COLLABORATORS            ");
-            Console.WriteLine("=======================================");
+            ConsoleHelpers.Headers("ALL COLLABORATORS");
+
             List<Collaborator> collaborators = _collaboratorService.GetAllCollaborators();
 
             if (collaborators.Count == 0)
@@ -88,7 +82,7 @@ namespace CENTRUMMarketing.App.Menus
                 }
             }
 
-            InputHelpers.Pause();
+            ConsoleHelpers.Pause();
         }
 
 

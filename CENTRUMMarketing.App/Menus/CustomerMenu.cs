@@ -52,7 +52,7 @@ namespace CENTRUMMarketing.App.Menus
 
         private void AddCustomerFlow()
         {
-            Console.Clear();
+            ConsoleHelpers.Headers("ADD NEW CUSTOMER");
 
             string companyName = InputHelpers.ReadRequiredString("Company name: ");
 
@@ -105,18 +105,16 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Customer added: {customer.CompanyName}");
-            InputHelpers.Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void ViewCustomersFlow()
         {
-            Console.Clear();
+
 
             List<Customer> customers = _customerService.GetAllCustomers();
 
-            Console.WriteLine("=======================================");
-            Console.WriteLine("             ALL CUSTOMERS             ");
-            Console.WriteLine("=======================================");
+            ConsoleHelpers.Headers("ALL CUSTOMERS");
 
             if (customers.Count == 0)
             {
@@ -148,7 +146,7 @@ namespace CENTRUMMarketing.App.Menus
             else
             {
                 Console.WriteLine("Customer not found");
-                InputHelpers.Pause();
+                ConsoleHelpers.Pause();
             }
 
             Console.WriteLine("=======================================");
@@ -162,11 +160,8 @@ namespace CENTRUMMarketing.App.Menus
 
             while (inDetailsMenu)
             {
-                Console.Clear();
+                ConsoleHelpers.Headers($"Customer: {customer.CompanyName}");
 
-                Console.WriteLine("=======================================");
-                Console.WriteLine($"    CUSTOMER DETAILS - {customer.CompanyName}");
-                Console.WriteLine("=======================================");
                 Console.WriteLine($"ID: {customer.Id}");
                 Console.WriteLine($"Company Name: {customer.CompanyName}");
                 Console.WriteLine($"Contact Person: {customer.ContactPerson}");
@@ -218,11 +213,8 @@ namespace CENTRUMMarketing.App.Menus
 
         private void EditCustomerFlow(Customer customer)
         {
-            Console.Clear();
+            ConsoleHelpers.Headers($"EDIT CUSTOMER: {customer.CompanyName}");
 
-            Console.WriteLine("=======================================");
-            Console.WriteLine("             EDIT CUSTOMER             ");
-            Console.WriteLine("=======================================");
             Console.WriteLine("1. Company Name");
             Console.WriteLine("2. Contact Person");
             Console.WriteLine("3. CVR");
@@ -268,16 +260,13 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Customer: {customer.CompanyName} has been updated.");
-            InputHelpers.Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void UpdateCustomerStatusFlow(Customer customer)
         {
-            Console.Clear();
+            ConsoleHelpers.Headers($"UPDATE STATUS: {customer.CompanyName}");
 
-            Console.WriteLine("=======================================");
-            Console.WriteLine("        UPDATE CUSTOMER STATUS         ");
-            Console.WriteLine("=======================================");
             Console.WriteLine("1. Lead");
             Console.WriteLine("2. Active");
             Console.WriteLine("3. Inactive");
@@ -318,7 +307,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine();
             Console.WriteLine($"Status updated to: {customer.Status}");
-            InputHelpers.Pause();
+            ConsoleHelpers.Pause();
         }
     }
 }

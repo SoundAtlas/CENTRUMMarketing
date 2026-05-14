@@ -60,5 +60,19 @@
                 }
             }
         }
+
+        public static void Headers(string title)
+        {
+            Console.Clear();
+            Console.WriteLine("=======================================");
+            Console.WriteLine($"         {title.ToUpper()}            ");
+            Console.WriteLine("=======================================");
+        }
+
+        public static void Pause()
+        {
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
 }
