@@ -385,7 +385,7 @@ namespace CENTRUMMarketing.App.Menus
             try
             {
                 _taskService.UpdateTaskStatus(task.Id, newStatus);
-                Console.WriteLine($"Task status updated to: {task.Status}");
+                Console.WriteLine($"Task status updated to: {newStatus}");
             }
 
             catch (EntityNotFoundException ex)
@@ -400,7 +400,7 @@ namespace CENTRUMMarketing.App.Menus
         private void UpdateTaskDeadlineFlow(TaskItem task)
         {
             ConsoleHelpers.Headers("UPDATE TASK DEADLINE");
-            Console.WriteLine($"Current deadline: {task.Deadline.ToShortDateString()}");
+            Console.WriteLine($"Current deadline: {task.Deadline:d}");
             Console.WriteLine("=======================================");
 
             DateTime newDeadline = InputHelpers.ReadDate("Enter new deadline (yyyy-mm-dd): ");
@@ -408,7 +408,7 @@ namespace CENTRUMMarketing.App.Menus
             try
             {
                 _taskService.UpdateTaskDeadline(task.Id, newDeadline);
-                Console.WriteLine($"Task deadline updated to: {task.Deadline.ToShortDateString()}");
+                Console.WriteLine($"Task deadline updated to: {newDeadline:d}");
             }
 
             catch (EntityNotFoundException ex)
@@ -489,5 +489,3 @@ namespace CENTRUMMarketing.App.Menus
 
     }
 }
-
-
