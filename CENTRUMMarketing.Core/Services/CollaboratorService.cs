@@ -43,6 +43,32 @@ namespace CENTRUMMarketing.Core.Services
             return _collaboratorRepository.GetAll();
         }
 
+        public Collaborator? GetCollaboratorById(int collaboratorId)
+        {
+            return _collaboratorRepository.GetById(collaboratorId);
+        }
+
+        public void UpdateCollaborator(
+            int collaboratorId,
+            string name,
+            string email,
+            string phone)
+        {
+            Collaborator? collaborator = _collaboratorRepository.GetById(collaboratorId);
+
+            if (collaborator == null)
+            {
+                throw new EntityNotFoundException(
+                    $"Collaborator with ID {collaboratorId} was not found.");
+            }
+
+            collaborator.Name = name;
+            collaborator.Email = email;
+            collaborator.Phone = phone;
+
+            _collaboratorRepository.Save();
+        }
+
         public void DeleteCollaborator(int collaboratorId)
         {
             Collaborator? collaborator = _collaboratorRepository.GetById(collaboratorId);

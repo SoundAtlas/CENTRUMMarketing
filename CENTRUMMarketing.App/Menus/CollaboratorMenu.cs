@@ -24,6 +24,7 @@ namespace CENTRUMMarketing.App.Menus
                 {
                     "Add Collaborator",
                     "View All Collaborators",
+                    "Edit Collaborator",
                     "Delete Collaborator",
                     "Back"
                 };
@@ -42,10 +43,14 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 2:
-                        DeleteCollaboratorFlow();
+                        EditCollaboratorFlow();
                         break;
 
                     case 3:
+                        DeleteCollaboratorFlow();
+                        break;
+
+                    case 4:
                     case null:
                         inCollaboratorMenu = false;
                         break;
@@ -86,6 +91,101 @@ namespace CENTRUMMarketing.App.Menus
                 {
                     Console.WriteLine($"ID: {collaborator.Id} | Name: {collaborator.Name} | Email: {collaborator.Email} | Phone: {collaborator.Phone}");
                 }
+            }
+
+            ConsoleHelpers.Pause();
+        }
+
+        private void EditCollaboratorFlow()
+        {
+            ConsoleHelpers.Headers("EDIT COLLABORATOR");
+
+            List<Collaborator> collaborators = _collaboratorService.GetAllCollaborators();
+
+            if (collaborators.Count == 0)
+            {
+                Console.WriteLine("No collaborators found.");
+                ConsoleHelpers.Pause();
+                return;
+            }
+
+            foreach (Collaborator collaborator in collaborators)
+            {
+                Console.WriteLine($"ID: {collaborator.Id} | Name: {collaborator.Name} | Email: {collaborator.Email} | Phone: {collaborator.Phone}");
+            }
+
+            Console.WriteLine("=======================================");
+
+            int collaboratorId = Helpers.InputHelpers.ReadInt("Enter collaborator ID to edit (0 to cancel): ");
+
+            if (collaboratorId == 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Edit cancelled.");
+                ConsoleHelpers.Pause();
+                return;
+            }
+
+            Collaborator? collaboratorToEdit = _collaboratorService.GetCollaboratorById(collaboratorId);
+
+            if (collaboratorToEdit == null)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Collaborator not found.");
+                ConsoleHelpers.Pause();
+                return;
+            }
+
+            Console.WriteLine($"1. Name: {collaboratorToEdit.Name}");
+            Console.WriteLine($"2. Email: {collaboratorToEdit.Email}");
+            Console.WriteLine($"3. Phone: {collaboratorToEdit.Phone}");
+            Console.WriteLine("0. Back");
+            Console.WriteLine("=======================================");
+
+            int choice = Helpers.InputHelpers.ReadInt("Choose field to edit: ");
+
+            string name = collaboratorToEdit.Name;
+            string email = collaboratorToEdit.Email;
+            string phone = collaboratorToEdit.Phone;
+
+            switch (choice)
+            {
+                case 1:
+                    name = Helpers.InputHelpers.ReadRequiredString("Enter new name: ");
+                    break;
+
+                case 2:
+                    email = Helpers.InputHelpers.ReadRequiredString("Enter new email: ");
+                    break;
+
+                case 3:
+                    phone = Helpers.InputHelpers.ReadRequiredString("Enter new phone number: ");
+                    break;
+
+                case 0:
+                    return;
+
+                default:
+                    Console.WriteLine("Invalid choice.");
+                    ConsoleHelpers.Pause();
+                    return;
+            }
+
+            try
+            {
+                _collaboratorService.UpdateCollaborator(
+                    collaboratorId,
+                    name,
+                    email,
+                    phone);
+
+                Console.WriteLine();
+                Console.WriteLine("Collaborator updated successfully.");
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
             }
 
             ConsoleHelpers.Pause();
