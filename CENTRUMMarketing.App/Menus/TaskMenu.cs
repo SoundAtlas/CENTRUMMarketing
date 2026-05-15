@@ -519,13 +519,22 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("This action cannot be undone.");
             Console.WriteLine();
 
-            string confirmation = InputHelpers.ReadRequiredString("Type DELETE to confirm: ");
+            string[] confirmationOptions =
+            {
+                 "Yes, delete task.",
+                 "No, cancel."
+            };
 
-            if (!confirmation.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            int? confirmationChoice = ConsoleHelpers.Navigation(
+                "DELETE TASK?",
+                confirmationOptions);
+
+            if (confirmationChoice == null || confirmationChoice == 1)
             {
                 Console.WriteLine();
                 Console.WriteLine("Deletion cancelled.");
                 ConsoleHelpers.Pause();
+
                 return false;
             }
 
@@ -540,6 +549,14 @@ namespace CENTRUMMarketing.App.Menus
                 return true;
             }
             catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                ConsoleHelpers.Pause();
+
+                return false;
+            }
+            catch (InvalidOperationException ex)
             {
                 Console.WriteLine();
                 Console.WriteLine(ex.Message);
