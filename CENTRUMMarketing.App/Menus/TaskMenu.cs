@@ -22,41 +22,39 @@ namespace CENTRUMMarketing.App.Menus
 
         public void ShowTaskMenu()
         {
+
+            string[] options = new string[]
+            {
+                "Add Task",
+                "View All Tasks",
+                "View Tasks By Customer",
+                "Back"
+            };
+
             bool inTaskMenu = true;
 
             while (inTaskMenu)
             {
-                ConsoleHelpers.Headers("TASK MANAGEMENT");
 
-                Console.WriteLine("1. Add Task");
-                Console.WriteLine("2. View All Tasks");
-                Console.WriteLine("3. View Tasks By Customer");
-                Console.WriteLine("0. Back");
-                Console.WriteLine("=======================================");
-
-                int choice = InputHelpers.ReadInt("Choose an option: ");
+                int? choice = ConsoleHelpers.Navigation("TASK MANAGEMENT", options);
 
                 switch (choice)
                 {
-                    case 1:
+                    case 0:
                         AddTaskFlow();
                         break;
 
-                    case 2:
+                    case 1:
                         ViewAllTasksFlow();
                         break;
 
-                    case 3:
+                    case 2:
                         ViewTasksByCustomerFlow();
                         break;
 
-                    case 0:
+                    case 3:
+                    case null:
                         inTaskMenu = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Invalid choice.");
-                        Console.ReadKey();
                         break;
                 }
             }
