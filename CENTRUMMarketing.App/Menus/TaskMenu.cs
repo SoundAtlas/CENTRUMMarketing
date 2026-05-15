@@ -290,7 +290,8 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("2. Update Status");
                 Console.WriteLine("3. Update Deadline");
                 Console.WriteLine("4. Assign Collaborator");
-                Console.WriteLine("5. Delete Task");
+                Console.WriteLine("5. Remove Collaborator");
+                Console.WriteLine("6. Delete Task");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
 
@@ -315,6 +316,10 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 5:
+                        RemoveCollaboratorFlow(task);
+                        break;
+
+                    case 6:
                         if (DeleteTaskFlow(task))
                         {
                             inDetailsMenu = false;
@@ -557,5 +562,46 @@ namespace CENTRUMMarketing.App.Menus
 
         }
 
+        private void RemoveCollaboratorFlow(TaskItem task)
+        {
+            ConsoleHelpers.Headers("REMOVE COLLABORATOR");
+
+            if (task.CollaboratorIds.Count == 0)
+            {
+                Console.WriteLine("No collaborators assigned to this task.");
+                ConsoleHelpers.Pause();
+                return;
+            }
+
+            List<Collaborator> assignedCollaborators = _collaboratorService.GetAllCollaborators();
+
+            foreach (Collaborator c in assignedCollaborators)
+            {
+                if (task.CollaboratorIds.Contains(c.Id))
+                {
+                    Console.WriteLine($"{c.Id}. {c.Name}");
+                }
+            }
+
+            Console.WriteLine();
+
+            int collaboratorId = InputHelpers.ReadInt("Enter collaborator ID to remove: ");
+
+            if (!task.CollaboratorIds.Contains(collaboratorId))
+            {
+                Console.WriteLine("That collaborator is not assigned to this task.");
+                ConsoleHelpers.Pause();
+                return;
+            }
+
+            task.CollaboratorIds.Remove(collaboratorId);
+
+            _taskService.SaveChanges();
+
+            Console.WriteLine();
+            Console.WriteLine("Collaborator removed from task.");
+
+            ConsoleHelpers.Pause();
+        }
     }
 }
