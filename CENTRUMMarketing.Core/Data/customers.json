@@ -56,5 +56,17 @@
       }
     ],
     "Id": 1
+  },
+  {
+    "CompanyName": "Bonk Inc",
+    "ContactPerson": "Hodja fra Pjort",
+    "Cvr": "66666666",
+    "Email": "jegharsamletkokosnoedderdagenlang@didididi.stak",
+    "Phone": "66006600",
+    "Status": 1,
+    "InvoicingReady": false,
+    "LastActivityDate": "2026-05-15T23:33:34.4362074+02:00",
+    "Tasks": [],
+    "Id": 2
   }
 ]

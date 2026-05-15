@@ -339,9 +339,17 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("Customers with connected tasks cannot be deleted.");
             Console.WriteLine();
 
-            string confirmation = InputHelpers.ReadRequiredString("Type DELETE to confirm deletion: ");
+            string[] confirmationOptions =
+               {
+                   "Yes, delete customer.",
+                   "No, cancel."
+               };
 
-            if (!confirmation.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            int? confirmationChoice = ConsoleHelpers.Navigation(
+                "DELETE CUSTOMER?",
+                confirmationOptions);
+
+            if (confirmationChoice == null || confirmationChoice == 1)
             {
                 Console.WriteLine();
                 Console.WriteLine("Deletion cancelled.");
