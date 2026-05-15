@@ -31,6 +31,7 @@ namespace CENTRUMMarketing.App.Menus
                 "Search Customer by Status",
                 "View Tasks by Status",
                 "View Tasks by Collaborator",
+                "View Tasks by Upcoming Deadlines",
                 "View Archived Customers",
                 "Exit"
             };
@@ -60,10 +61,14 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 4:
-                        ShowArchivedCustomers();
+                        ShowTasksWithUpcomingDeadlines();
                         break;
 
                     case 5:
+                        ShowArchivedCustomers();
+                        break;
+
+                    case 6:
                     case null:
                         running = false;
                         break;
@@ -245,7 +250,79 @@ namespace CENTRUMMarketing.App.Menus
             {
                 foreach (var task in tasks)
                 {
-                    Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline:yyyy/MM/dd} | Status: {task.Status}");
+                    Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline:d} | Status: {task.Status}");
+                }
+            }
+
+            Pause();
+        }
+
+        private void ShowTasksWithUpcomingDeadlines()
+        {
+            Console.Clear();
+            Console.WriteLine("VIEW TASKS BY UPCOMING DEADLINES");
+            Console.WriteLine();
+
+            string[] deadlineOptions =
+            {
+                "Due today",
+                "Due within 7 days",
+                "Due within 14 days",
+                "Due within 30 days",
+                "Back"
+            };
+
+            int? choice = ConsoleHelpers.Navigation("SELECT DEADLINE RANGE", deadlineOptions);
+
+            if (choice == null || choice == 4) return;
+
+            int daysAhead;
+
+            switch (choice)
+            {
+                case 0:
+                    daysAhead = 0;
+                    break;
+
+                case 1:
+                    daysAhead = 7;
+                    break;
+
+                case 2:
+                    daysAhead = 14;
+                    break;
+
+                case 3:
+                    daysAhead = 30;
+                    break;
+
+                default:
+                    return;
+            }
+
+            Console.Clear();
+
+            if (daysAhead == 0)
+            {
+                Console.WriteLine("TASKS DUE TODAY");
+            }
+            
+            else
+            {
+                Console.WriteLine($"TASKS DUE WITHIN {daysAhead} DAYS");
+            }
+
+            Console.WriteLine();
+
+            var tasks = _taskService.GetTasksWithUpcomingDeadlines(daysAhead);
+
+            if (tasks.Count == 0) Console.WriteLine("No upcoming tasks found in this deadline range.");
+            
+            else
+            {
+                foreach (var task in tasks)
+                {
+                    Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline:d} | Status: {task.Status}");
                 }
             }
 

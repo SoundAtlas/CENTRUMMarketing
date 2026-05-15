@@ -20,5 +20,50 @@
       1
     ],
     "Id": 2
+  },
+  {
+    "CustomerId": 1,
+    "Title": "7 days",
+    "Description": "7 days",
+    "Deadline": "2026-05-22T00:00:00",
+    "Status": 1,
+    "CollaboratorIds": [],
+    "Id": 3
+  },
+  {
+    "CustomerId": 1,
+    "Title": "7 days completed",
+    "Description": "completed",
+    "Deadline": "2026-05-22T00:00:00",
+    "Status": 3,
+    "CollaboratorIds": [],
+    "Id": 4
+  },
+  {
+    "CustomerId": 1,
+    "Title": "14days",
+    "Description": "14days",
+    "Deadline": "2026-05-29T00:00:00",
+    "Status": 0,
+    "CollaboratorIds": [],
+    "Id": 5
+  },
+  {
+    "CustomerId": 1,
+    "Title": "30d",
+    "Description": "30da",
+    "Deadline": "2026-06-14T00:00:00",
+    "Status": 0,
+    "CollaboratorIds": [],
+    "Id": 6
+  },
+  {
+    "CustomerId": 1,
+    "Title": "31da",
+    "Description": "31da",
+    "Deadline": "2026-06-15T00:00:00",
+    "Status": 0,
+    "CollaboratorIds": [],
+    "Id": 7
   }
 ]

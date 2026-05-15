@@ -130,6 +130,26 @@ namespace CENTRUMMarketing.Core.Services
             return results;
         }
 
+        public List<TaskItem> GetTasksWithUpcomingDeadlines(int daysAhead)
+        {
+            List<TaskItem> results = new List<TaskItem>();
+
+            DateTime today = DateTime.Today;
+            DateTime maxDeadline = today.AddDays(daysAhead);
+
+            foreach (TaskItem task in _taskRepository.GetAll())
+            {
+                bool isUpcoming = task.Deadline.Date >= today && task.Deadline.Date <= maxDeadline;
+                bool isNotCompleted = task.Status != TaskItemStatus.Completed;
+
+                if (isUpcoming && isNotCompleted) results.Add(task);
+            }
+
+            results.Sort((task1, task2) => task1.Deadline.CompareTo(task2.Deadline));
+
+            return results;
+        }
+
         public void DeleteTask(int taskId)
         {
             TaskItem? task = _taskRepository.GetById(taskId);
