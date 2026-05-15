@@ -211,6 +211,8 @@ namespace CENTRUMMarketing.App.Menus
             if (tasks.Count == 0)
             {
                 Console.WriteLine("No tasks found for this customer.");
+                ConsoleHelpers.Pause();
+                return;
             }
             else
             {
@@ -221,7 +223,25 @@ namespace CENTRUMMarketing.App.Menus
             }
 
             Console.WriteLine("=======================================");
-            ConsoleHelpers.Pause();
+
+            int taskId = InputHelpers.ReadInt("Enter task ID to view details (0 to return): ");
+
+            if (taskId == 0)
+            {
+                return;
+            }
+
+            TaskItem? selectedTask = _taskService.GetTaskById(taskId);
+
+            if (selectedTask == null || selectedTask.CustomerId != customerId)
+            {
+                Console.WriteLine("Task not found for this customer.");
+                ConsoleHelpers.Pause();
+                return;
+            }
+
+            ShowTaskDetails(selectedTask);
+
         }
 
 
