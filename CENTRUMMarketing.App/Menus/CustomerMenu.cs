@@ -22,7 +22,7 @@ namespace CENTRUMMarketing.App.Menus
             string[] options =
             {
                 "Add Customer",
-                "View All Customers",
+                "View Current Customers",
                 "Return"
             };
 
@@ -71,19 +71,19 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("2. Active");
             Console.WriteLine("3. Dormant");
 
-            string? statusChoice = Console.ReadLine();
+            int statusChoice = InputHelpers.ReadInt("Choose status: ");
 
             CustomerStatus status = CustomerStatus.Active;
 
             switch (statusChoice)
             {
-                case "1":
+                case 1:
                     status = CustomerStatus.Lead;
                     break;
-                case "2":
+                case 2:
                     status = CustomerStatus.Active;
                     break;
-                case "3":
+                case 3:
                     status = CustomerStatus.Dormant;
                     break;
                 default:
@@ -92,37 +92,54 @@ namespace CENTRUMMarketing.App.Menus
 
             }
 
-            Customer customer = _customerService.AddCustomer(
-                companyName,
-                contactPerson,
-                cvr,
-                email,
-                phone,
-                status);
+            try
+            {
+                Customer customer = _customerService.AddCustomer(
+                    companyName,
+                    contactPerson,
+                    cvr,
+                    email,
+                    phone,
+                    status);
 
-            Console.WriteLine();
-            Console.WriteLine($"Customer added: {customer.CompanyName}");
+                Console.WriteLine();
+                Console.WriteLine($"Customer added: {customer.CompanyName}");
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+
             ConsoleHelpers.Pause();
         }
 
         private void ViewCustomersFlow()
         {
 
-
             List<Customer> customers = _customerService.GetAllCustomers();
 
-            ConsoleHelpers.Headers("ALL CUSTOMERS");
+            ConsoleHelpers.Headers("CURRENT CUSTOMERS");
 
-            if (customers.Count == 0)
+            bool foundVisibleCustomers = false;
+
+            foreach (Customer c in customers)
             {
-                Console.WriteLine("No customers found");
-            }
-            else
-            {
-                foreach (var c in customers)
+                if (c.IsArchived())
                 {
-                    Console.WriteLine($"{c.Id}. {c.CompanyName} - {c.ContactPerson} - {c.Status} - Invoicing Ready: {(c.InvoicingReady ? "Yes" : "No")}");
+                    continue;
                 }
+
+                Console.WriteLine($"{c.Id}. {c.CompanyName} - {c.ContactPerson} - {c.Status} - Invoicing Ready: {(c.InvoicingReady ? "Yes" : "No")}");
+                foundVisibleCustomers = true;
+            }
+
+            if (!foundVisibleCustomers)
+            {
+                Console.WriteLine("No customers to display.");
+                ConsoleHelpers.Pause();
+                return;
             }
 
             Console.WriteLine("=======================================");
@@ -136,7 +153,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Customer? customer = _customerService.GetCustomerById(id);
 
-            if (customer != null)
+            if (customer != null && !customer.IsArchived())
             {
                 ShowCustomerDetails(customer);
             }
@@ -190,7 +207,10 @@ namespace CENTRUMMarketing.App.Menus
                     case "3":
                         customer.InvoicingReady = !customer.InvoicingReady;
                         _customerService.SaveChanges();
+
                         Console.WriteLine();
+                        Console.WriteLine($"Invoicing ready set to: {(customer.InvoicingReady ? "Yes" : "No")}");
+                        ConsoleHelpers.Pause();
                         break;
 
                     case "4":

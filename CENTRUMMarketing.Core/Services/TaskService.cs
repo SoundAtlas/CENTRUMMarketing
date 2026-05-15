@@ -42,6 +42,12 @@ namespace CENTRUMMarketing.Core.Services
         {
             Customer? customer = _customerRepository.GetById(customerId);
 
+            if (customer.IsArchived())
+            {
+                throw new InvalidOperationException(
+                    $"Cannot add task to archived customer with ID {customerId}.");
+            }
+
             if (customer == null)
             {
                 throw new EntityNotFoundException(
@@ -153,7 +159,7 @@ namespace CENTRUMMarketing.Core.Services
         public void DeleteTask(int taskId)
         {
             TaskItem? task = _taskRepository.GetById(taskId);
-            
+
             if (task == null)
 
             {

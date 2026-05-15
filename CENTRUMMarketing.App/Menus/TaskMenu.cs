@@ -100,8 +100,9 @@ namespace CENTRUMMarketing.App.Menus
                     status = TaskItemStatus.Completed;
                     break;
                 default:
-                    Console.WriteLine("Invalid status choice. Defaulting to 'To Do'.");
-                    break;
+                    Console.WriteLine("Invalid status choice.");
+                    ConsoleHelpers.Pause();
+                    return;
             }
 
             try
@@ -113,8 +114,14 @@ namespace CENTRUMMarketing.App.Menus
                     deadline,
                     status);
 
+                Customer? customer = _customerService.GetCustomerById(customerId);
+
                 Console.WriteLine();
                 Console.WriteLine("Task created successfully.");
+                Console.WriteLine($"Task: {task.Title}");
+                Console.WriteLine($"Customer: {customer?.CompanyName}");
+                Console.WriteLine($"Deadline: {task.Deadline.ToShortDateString()}");
+                Console.WriteLine($"Status: {task.Status}");
 
             }
 
@@ -125,6 +132,11 @@ namespace CENTRUMMarketing.App.Menus
             }
 
             catch (InvalidDeadlineException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+            }
+            catch (InvalidOperationException ex)
             {
                 Console.WriteLine();
                 Console.WriteLine(ex.Message);
