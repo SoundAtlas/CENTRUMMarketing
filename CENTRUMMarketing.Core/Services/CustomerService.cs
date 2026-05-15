@@ -77,6 +77,21 @@ namespace CENTRUMMarketing.Core.Services
             return results;
         }
 
+        public List<Customer> GetCustomersByStatus(CustomerStatus status)
+        {
+            List<Customer> results = new List<Customer>();
+
+            foreach (Customer customer in _customerRepository.GetAll())
+            {
+                if (customer.Status == status)
+                {
+                    results.Add(customer);
+                }
+            }
+
+            return results;
+        }
+
         public List<Customer> GetArchivedCustomers()
         {
             List<Customer> archivedCustomers = new List<Customer>();

@@ -23,6 +23,7 @@ namespace CENTRUMMarketing.App.Menus
             string[] options =
             {
                 "Search Customer by Name",
+                "Search Customer by Status",
                 "View Tasks by Status",
                 "View Archived Customers",
                 "Exit"
@@ -41,14 +42,18 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 1:
-                        ShowTasksByStatus();
+                        ShowCustomersByStatus();
                         break;
 
                     case 2:
-                        ShowArchivedCustomers();
+                        ShowTasksByStatus();
                         break;
 
                     case 3:
+                        ShowArchivedCustomers();
+                        break;
+
+                    case 4:
                     case null:
                         running = false;
                         break;
@@ -71,6 +76,56 @@ namespace CENTRUMMarketing.App.Menus
             var matchingCustomers = _customerService.SearchCustomersByName(searchTerm);
 
             _customerPrinter.PrintCustomers(matchingCustomers);
+
+            Pause();
+        }
+
+        private void ShowCustomersByStatus()
+        {
+            Console.Clear();
+            Console.WriteLine("FILTER CUSTOMERS BY STATUS");
+            Console.WriteLine();
+
+            string[] statusOptions =
+            {
+                "Lead",
+                "Active",
+                "Dormant",
+                "Back"
+            };
+
+            int? choice = ConsoleHelpers.Navigation("SELECT CUSTOMER STATUS", statusOptions);
+            
+            if (choice == null || choice == 3) return;
+            
+            CustomerStatus selectedStatus;
+
+            switch (choice)
+            {
+                case 0:
+                    selectedStatus = CustomerStatus.Lead;
+                    break;
+
+                case 1:
+                    selectedStatus = CustomerStatus.Active;
+                    break;
+
+                case 2:
+                    selectedStatus = CustomerStatus.Dormant;
+                    break;
+
+                default:
+                    return;
+            }
+
+            Console.Clear();
+            Console.WriteLine($"CUSTOMERS WITH STATUS: {selectedStatus}");
+            Console.WriteLine();
+
+            var customers = _customerService.GetCustomersByStatus(selectedStatus);
+            
+            if (customers.Count == 0) Console.WriteLine("No customers found with this status.");
+            else _customerPrinter.PrintCustomers(customers);
 
             Pause();
         }
