@@ -1,4 +1,5 @@
 ﻿using CENTRUMMarketing.Core.Enums;
+using CENTRUMMarketing.Core.Exceptions;
 using CENTRUMMarketing.Core.Interfaces;
 using CENTRUMMarketing.Core.Models;
 
@@ -7,11 +8,15 @@ namespace CENTRUMMarketing.Core.Services
     public class CustomerService
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly ITaskRepository _taskRepository;
         private int _nextId;
 
-        public CustomerService(ICustomerRepository customerRepository)
+        public CustomerService(
+            ICustomerRepository customerRepository,
+            ITaskRepository taskRepository)
         {
             _customerRepository = customerRepository;
+            _taskRepository = taskRepository;
 
             // Initialize _nextId based on existing customers
             List<Customer> existingCustomers = _customerRepository.GetAll();
@@ -72,6 +77,21 @@ namespace CENTRUMMarketing.Core.Services
             return results;
         }
 
+        public List<Customer> GetCustomersByStatus(CustomerStatus status)
+        {
+            List<Customer> results = new List<Customer>();
+
+            foreach (Customer customer in _customerRepository.GetAll())
+            {
+                if (customer.Status == status)
+                {
+                    results.Add(customer);
+                }
+            }
+
+            return results;
+        }
+
         public List<Customer> GetArchivedCustomers()
         {
             List<Customer> archivedCustomers = new List<Customer>();
@@ -85,6 +105,34 @@ namespace CENTRUMMarketing.Core.Services
             }
 
             return archivedCustomers;
+        }
+
+        public void DeleteCustomer(int customerId)
+        {
+            Customer? customer = _customerRepository.GetById(customerId);
+
+            if (customer == null)
+            {
+                throw new EntityNotFoundException(
+                    $"Customer with ID {customerId} was not found.");
+            }
+
+            foreach (TaskItem task in _taskRepository.GetAll())
+            {
+                if (task.CustomerId == customerId)
+                {
+                    throw new InvalidOperationException(
+                        $"Cannot delete customer with ID {customerId} because it has associated tasks. Please delete or reassign the tasks first.");
+                }
+            }
+
+            bool deleted = _customerRepository.Delete(customerId);
+
+            if (!deleted)
+            {
+                throw new EntityNotFoundException(
+                    $"Customer with ID {customerId} was not found.");
+            }
         }
 
         public void SaveChanges()

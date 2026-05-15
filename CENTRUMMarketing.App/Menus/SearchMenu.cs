@@ -7,14 +7,19 @@ namespace CENTRUMMarketing.App.Menus
 {
     public class SearchMenu
     {
+        private readonly CollaboratorService _collaboratorService;
         private readonly CustomerService _customerService;
         private readonly CustomerPrinter _customerPrinter;
         private readonly TaskService _taskService;
 
-        public SearchMenu(CustomerService customerService, TaskService taskService)
+        public SearchMenu(
+            CustomerService customerService,
+            TaskService taskService,
+            CollaboratorService collaboratorService)
         {
             _customerService = customerService;
             _taskService = taskService;
+            _collaboratorService = collaboratorService;
             _customerPrinter = new CustomerPrinter();
         }
 
@@ -23,7 +28,10 @@ namespace CENTRUMMarketing.App.Menus
             string[] options =
             {
                 "Search Customer by Name",
+                "Search Customer by Status",
                 "View Tasks by Status",
+                "View Tasks by Collaborator",
+                "View Tasks by Upcoming Deadlines",
                 "View Archived Customers",
                 "Exit"
             };
@@ -41,14 +49,26 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 1:
-                        ShowTasksByStatus();
+                        ShowCustomersByStatus();
                         break;
 
                     case 2:
-                        ShowArchivedCustomers();
+                        ShowTasksByStatus();
                         break;
 
                     case 3:
+                        ShowTasksByCollaborator();
+                        break;
+
+                    case 4:
+                        ShowTasksWithUpcomingDeadlines();
+                        break;
+
+                    case 5:
+                        ShowArchivedCustomers();
+                        break;
+
+                    case 6:
                     case null:
                         running = false;
                         break;
@@ -71,6 +91,56 @@ namespace CENTRUMMarketing.App.Menus
             var matchingCustomers = _customerService.SearchCustomersByName(searchTerm);
 
             _customerPrinter.PrintCustomers(matchingCustomers);
+
+            Pause();
+        }
+
+        private void ShowCustomersByStatus()
+        {
+            Console.Clear();
+            Console.WriteLine("FILTER CUSTOMERS BY STATUS");
+            Console.WriteLine();
+
+            string[] statusOptions =
+            {
+                "Lead",
+                "Active",
+                "Dormant",
+                "Back"
+            };
+
+            int? choice = ConsoleHelpers.Navigation("SELECT CUSTOMER STATUS", statusOptions);
+            
+            if (choice == null || choice == 3) return;
+            
+            CustomerStatus selectedStatus;
+
+            switch (choice)
+            {
+                case 0:
+                    selectedStatus = CustomerStatus.Lead;
+                    break;
+
+                case 1:
+                    selectedStatus = CustomerStatus.Active;
+                    break;
+
+                case 2:
+                    selectedStatus = CustomerStatus.Dormant;
+                    break;
+
+                default:
+                    return;
+            }
+
+            Console.Clear();
+            Console.WriteLine($"CUSTOMERS WITH STATUS: {selectedStatus}");
+            Console.WriteLine();
+
+            var customers = _customerService.GetCustomersByStatus(selectedStatus);
+            
+            if (customers.Count == 0) Console.WriteLine("No customers found with this status.");
+            else _customerPrinter.PrintCustomers(customers);
 
             Pause();
         }
@@ -133,6 +203,126 @@ namespace CENTRUMMarketing.App.Menus
                 foreach (var task in tasks)
                 {
                     Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline.ToShortDateString()} | Status: {task.Status}");
+                }
+            }
+
+            Pause();
+        }
+
+        private void ShowTasksByCollaborator()
+        {
+            Console.Clear();
+            Console.WriteLine("VIEW TASKS BY COLLABORATOR");
+            Console.WriteLine();
+
+            var collaborators = _collaboratorService.GetAllCollaborators();
+
+            if (collaborators.Count == 0)
+            {
+                Console.WriteLine("No collaborators found.");
+                Pause();
+                return;
+            }
+            string[] collaboratorOptions = new string[collaborators.Count + 1];
+
+            for (int i = 0; i < collaborators.Count; i++)
+            {
+                var collaborator = collaborators[i];
+                collaboratorOptions[i] = $"{collaborator.Name} ({collaborator.Email})";
+            }
+
+            collaboratorOptions[collaboratorOptions.Length - 1] = "Back";
+
+            int? choice = ConsoleHelpers.Navigation("SELECT COLLABORATOR", collaboratorOptions);
+
+            if (choice == null || choice == collaboratorOptions.Length - 1) return;
+
+            var selectedCollaborator = collaborators[choice.Value];
+
+            Console.Clear();
+            Console.WriteLine($"TASKS ASSIGNED TO: {selectedCollaborator.Name}");
+            Console.WriteLine();
+
+            var tasks = _taskService.GetTasksByCollaboratorId(selectedCollaborator.Id);
+
+            if (tasks.Count == 0) Console.WriteLine("No tasks found for this collaborator.");
+            else
+            {
+                foreach (var task in tasks)
+                {
+                    Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline:d} | Status: {task.Status}");
+                }
+            }
+
+            Pause();
+        }
+
+        private void ShowTasksWithUpcomingDeadlines()
+        {
+            Console.Clear();
+            Console.WriteLine("VIEW TASKS BY UPCOMING DEADLINES");
+            Console.WriteLine();
+
+            string[] deadlineOptions =
+            {
+                "Due today",
+                "Due within 7 days",
+                "Due within 14 days",
+                "Due within 30 days",
+                "Back"
+            };
+
+            int? choice = ConsoleHelpers.Navigation("SELECT DEADLINE RANGE", deadlineOptions);
+
+            if (choice == null || choice == 4) return;
+
+            int daysAhead;
+
+            switch (choice)
+            {
+                case 0:
+                    daysAhead = 0;
+                    break;
+
+                case 1:
+                    daysAhead = 7;
+                    break;
+
+                case 2:
+                    daysAhead = 14;
+                    break;
+
+                case 3:
+                    daysAhead = 30;
+                    break;
+
+                default:
+                    return;
+            }
+
+            Console.Clear();
+
+            if (daysAhead == 0)
+            {
+                Console.WriteLine("TASKS DUE TODAY");
+            }
+            
+            else
+            {
+                Console.WriteLine($"TASKS DUE WITHIN {daysAhead} DAYS");
+            }
+
+            Console.WriteLine();
+
+            var tasks = _taskService.GetTasksWithUpcomingDeadlines(daysAhead);
+
+            if (tasks.Count == 0) Console.WriteLine("No upcoming tasks found in this deadline range.");
+            
+            else
+            {
+                foreach (var task in tasks)
+                {
+                    Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline:d} | Status: {task.Status}");
                 }
             }
 

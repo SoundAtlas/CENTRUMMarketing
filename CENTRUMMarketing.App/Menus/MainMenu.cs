@@ -1,4 +1,6 @@
-﻿namespace CENTRUMMarketing.App.Menus
+﻿using CENTRUMMarketing.Core.Services;
+
+namespace CENTRUMMarketing.App.Menus
 {
     public class MainMenu
     {
@@ -7,20 +9,22 @@
         private readonly DashboardMenu _dashboardMenu;
         private readonly SearchMenu _searchMenu;
         private readonly CollaboratorMenu _collaboratorMenu;
-
+        private readonly DashboardService _dashboardService;
 
         public MainMenu(
             CustomerMenu customerMenu,
             TaskMenu taskMenu,
             DashboardMenu dashboardMenu,
             SearchMenu searchMenu,
-            CollaboratorMenu collaboratorMenu)
+            CollaboratorMenu collaboratorMenu,
+            DashboardService dashboardService)
         {
             _customerMenu = customerMenu;
             _taskMenu = taskMenu;
             _dashboardMenu = dashboardMenu;
             _searchMenu = searchMenu;
             _collaboratorMenu = collaboratorMenu;
+            _dashboardService = dashboardService;
         }
 
         public void ShowMainMenu()
@@ -40,7 +44,7 @@
             while (running)
             {
                 int? choice = UI.ConsoleHelpers.Navigation(
-                    "CENTRUM MAIN MENU",
+                    GetMainMenuTitle(),
                     options);
 
                 switch (choice)
@@ -71,6 +75,20 @@
                         break;
                 }
             }
+        }
+
+        private string GetMainMenuTitle()
+        {
+            return
+                $"CENTRUM MAIN MENU\n" +
+                "\n" +
+                "Mini dashboard\n" +
+                "---------------------------------------\n" +
+                $"Active customers:        {_dashboardService.GetActiveCustomersCount()}\n" +
+                $"Leads:                   {_dashboardService.GetLeadsCount()}\n" +
+                $"Tasks due this week:     {_dashboardService.GetTasksDueThisWeekCount()}\n" +
+                $"Waiting on client:       {_dashboardService.GetWaitingClientTasksCount()}\n" +
+                $"Ready for invoice:       {_dashboardService.GetInvoicingReadyCustomersCount()}";
         }
     }
 }

@@ -7,6 +7,7 @@ namespace CENTRUMMarketing.Core.Interfaces
         List<Customer> GetAll();
         Customer? GetById(int id);
         void Add(Customer customer);
+        bool Delete(int id);
         void Save();
     }
 }

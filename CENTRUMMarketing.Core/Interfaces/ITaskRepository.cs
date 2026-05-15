@@ -7,6 +7,7 @@ namespace CENTRUMMarketing.Core.Interfaces
         List<TaskItem> GetAll();
         TaskItem? GetById(int id);
         void Add(TaskItem task);
+        bool Delete(int id);
         void Save();
     }
 }
