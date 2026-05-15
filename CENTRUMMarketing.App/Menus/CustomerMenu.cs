@@ -1,6 +1,7 @@
 ﻿using CENTRUMMarketing.App.Helpers;
 using CENTRUMMarketing.App.UI;
 using CENTRUMMarketing.Core.Enums;
+using CENTRUMMarketing.Core.Exceptions;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
 
@@ -170,6 +171,7 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("1. Edit Customer");
                 Console.WriteLine("2. Update Status");
                 Console.WriteLine("3. Toggle Invoicing Ready");
+                Console.WriteLine("4. Delete Customer");
                 Console.WriteLine("0. Back");
                 Console.WriteLine("=======================================");
 
@@ -191,6 +193,10 @@ namespace CENTRUMMarketing.App.Menus
                         Console.WriteLine();
                         break;
 
+                    case "4":
+                        if (DeleteCustomerFlow(customer)) inDetailsMenu = false;
+                        break;
+
                     case "0":
                         inDetailsMenu = false;
                         break;
@@ -200,10 +206,6 @@ namespace CENTRUMMarketing.App.Menus
                         Console.ReadKey();
                         break;
                 }
-
-
-
-
             }
         }
 
@@ -299,6 +301,61 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine();
             Console.WriteLine($"Status updated to: {customer.Status}");
             ConsoleHelpers.Pause();
+        }
+
+        private bool DeleteCustomerFlow(Customer customer)
+        {
+            ConsoleHelpers.Headers("DELETE CUSTOMER");
+
+            Console.WriteLine($"ID: {customer.Id}");
+            Console.WriteLine($"Company Name: {customer.CompanyName}");
+            Console.WriteLine($"Contact Person: {customer.ContactPerson}");
+            Console.WriteLine($"CVR: {customer.Cvr}");
+            Console.WriteLine($"Email: {customer.Email}");
+            Console.WriteLine($"Phone: {customer.Phone}");
+            Console.WriteLine($"Status: {customer.Status}");
+            Console.WriteLine("=======================================");
+            Console.WriteLine("This action cannot be undone.");
+            Console.WriteLine("Customers with connected tasks cannot be deleted.");
+            Console.WriteLine();
+
+            string confirmation = InputHelpers.ReadRequiredString("Type DELETE to confirm deletion: ");
+
+            if (!confirmation.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine();
+                Console.WriteLine("Deletion cancelled.");
+                ConsoleHelpers.Pause();
+
+                return false;
+            }
+
+            try
+            {
+                _customerService.DeleteCustomer(customer.Id);
+
+                Console.WriteLine();
+                Console.WriteLine("Customer deleted successfully.");
+                ConsoleHelpers.Pause();
+
+                return true;
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                ConsoleHelpers.Pause();
+
+                return false;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                ConsoleHelpers.Pause();
+
+                return false;
+            }
         }
     }
 }

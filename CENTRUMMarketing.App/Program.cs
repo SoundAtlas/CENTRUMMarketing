@@ -15,7 +15,7 @@ namespace CENTRUMMarketing.App
             TaskRepository taskRepository = new TaskRepository();
             CollaboratorRepository collaboratorRepository = new CollaboratorRepository();
 
-            CustomerService customerService = new CustomerService(customerRepository);
+            CustomerService customerService = new CustomerService(customerRepository, taskRepository);
             TaskService taskService = new TaskService(taskRepository, customerRepository);
             CollaboratorService collaboratorService = new CollaboratorService(collaboratorRepository, taskRepository);
 

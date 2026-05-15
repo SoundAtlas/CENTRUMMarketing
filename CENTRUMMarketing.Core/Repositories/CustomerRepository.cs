@@ -37,7 +37,14 @@ namespace CENTRUMMarketing.Core.Repositories
             return null;
         }
 
+        public bool Delete(int id)
+        {
+            Customer? customer = GetById(id);
 
+            if (customer == null) return false;
+
+            return _jsonRepository.Remove(customer);
+        }
 
         public void Save()
         {
