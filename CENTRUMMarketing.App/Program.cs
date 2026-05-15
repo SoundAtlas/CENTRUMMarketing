@@ -41,7 +41,8 @@ namespace CENTRUMMarketing.App
                 taskMenu,
                 dashboardMenu,
                 searchMenu,
-                collaboratorMenu);
+                collaboratorMenu,
+                dashboardService);
 
             mainMenu.ShowMainMenu();
 
