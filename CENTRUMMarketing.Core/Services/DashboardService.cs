@@ -32,6 +32,13 @@ namespace CENTRUMMarketing.Core.Services
                 .Count(c => c.Status == CustomerStatus.Lead);
         }
 
+        public int GetInvoicingReadyCustomersCount()
+        {
+            return _customerRepository
+                .GetAll()
+                .Count(c => c.InvoicingReady);
+        }
+
         public int GetTasksDueThisWeekCount()
         {
             DateTime today = DateTime.Today;

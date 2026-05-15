@@ -24,6 +24,7 @@ namespace CENTRUMMarketing.App.Menus
             {
                 $"Active customers:        {_dashboardService.GetActiveCustomersCount()}",
                 $"Leads:                   {_dashboardService.GetLeadsCount()}",
+                $"Invoicing ready:         {_dashboardService.GetInvoicingReadyCustomersCount()}",
                 $"Tasks due this week:     {_dashboardService.GetTasksDueThisWeekCount()}",
                 $"Waiting client tasks:    {_dashboardService.GetWaitingClientTasksCount()}",
                 $"Completed tasks:         {_dashboardService.GetCompletedTasksCount()}"
@@ -32,8 +33,6 @@ namespace CENTRUMMarketing.App.Menus
             _dashboardPrinter.PrintDashboard(
                 "DASHBOARD",
                 dashboardLines);
-
-            Console.ReadKey();
         }
     }
 }
