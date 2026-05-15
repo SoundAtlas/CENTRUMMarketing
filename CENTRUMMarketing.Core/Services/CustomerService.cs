@@ -33,6 +33,15 @@ namespace CENTRUMMarketing.Core.Services
 
         public Customer AddCustomer(string companyName, string contactPerson, string cvr, string email, string phone, CustomerStatus status)
         {
+
+            foreach (Customer existingCustomer in _customerRepository.GetAll())
+            {
+                if (existingCustomer.Cvr == cvr)
+                {
+                    throw new InvalidOperationException(
+                        $"A customer with this CVR already exists. CVR must be unique.");
+                }
+            }
             Customer customer = new Customer(_nextId, companyName, contactPerson, cvr, email, phone, status);
 
             _customerRepository.Add(customer);

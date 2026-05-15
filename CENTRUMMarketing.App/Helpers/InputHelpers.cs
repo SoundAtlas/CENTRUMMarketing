@@ -2,20 +2,21 @@
 {
     public class InputHelpers
     {
-        public static int ReadInt(string prompt)
+        public static int ReadInt(string prompt, int min = int.MinValue, int max = int.MaxValue)
         {
             while (true)
             {
                 Console.Write(prompt);
 
-                bool success = int.TryParse(Console.ReadLine(), out int result);
-
-                if (success)
+                if (int.TryParse(Console.ReadLine(), out int result))
                 {
-                    return result;
+                    if (result >= min && result <= max)
+                    {
+                        return result;
+                    }
                 }
 
-                Console.WriteLine("Invalid input. Please enter a valid whole number.");
+                Console.WriteLine($"Invalid input. Please enter a valid whole number between {min} and {max}.");
             }
         }
 
@@ -53,7 +54,51 @@
             }
         }
 
+        public static string ReadEmail(string message)
+        {
+            while (true)
+            {
 
+                string email = ReadRequiredString(message);
+
+                if (email.Contains("@") && email.Contains("."))
+                {
+                    return email;
+                }
+
+                Console.WriteLine("Invalid email. Email must contain @ and .");
+            }
+        }
+
+        public static string ReadCvr(string message)
+        {
+            while (true)
+            {
+                string cvr = ReadRequiredString(message);
+
+                if (cvr.Length == 8 && cvr.All(char.IsDigit))
+                {
+                    return cvr;
+                }
+
+                Console.WriteLine("CVR must contain exactly 8 digits.");
+            }
+        }
+
+        public static string ReadPhoneNumber(string prompt)
+        {
+            while (true)
+            {
+                string phone = ReadRequiredString(prompt);
+
+                if (phone.All(char.IsDigit) && phone.Length >= 8)
+                {
+                    return phone;
+                }
+
+                Console.WriteLine("Phone number must contain at least 8 digits.");
+            }
+        }
 
     }
 }

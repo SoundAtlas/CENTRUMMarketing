@@ -1,17 +1,6 @@
 [
   {
     "CustomerId": 1,
-    "Title": "Tester",
-    "Description": "test",
-    "Deadline": "2026-05-15T00:00:00",
-    "Status": 0,
-    "CollaboratorIds": [
-      1
-    ],
-    "Id": 1
-  },
-  {
-    "CustomerId": 1,
     "Title": "lol",
     "Description": "lolololo",
     "Deadline": "2026-05-15T00:00:00",
@@ -27,7 +16,9 @@
     "Description": "7 days",
     "Deadline": "2026-05-22T00:00:00",
     "Status": 1,
-    "CollaboratorIds": [],
+    "CollaboratorIds": [
+      1
+    ],
     "Id": 3
   },
   {

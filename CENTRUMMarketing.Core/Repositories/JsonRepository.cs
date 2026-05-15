@@ -9,6 +9,11 @@ namespace CENTRUMMarketing.Core.Repositories
         private readonly string _filePath;
         private readonly List<T> _items;
 
+        private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+
         public JsonRepository(string filePath)
         {
             _filePath = filePath;
@@ -29,24 +34,31 @@ namespace CENTRUMMarketing.Core.Repositories
         public bool Remove(T item)
         {
             bool removed = _items.Remove(item);
-            
-            if (removed) Save();
 
+            if (removed)
+            {
+                Save();
+            }
             return removed;
         }
 
         public void Save()
         {
-
             try
             {
-                string json = JsonSerializer.Serialize(_items, new JsonSerializerOptions
+
+                try
                 {
-                    WriteIndented = true
-                });
+                    EnsureDirectoryExists();
 
-                File.WriteAllText(_filePath, json);
-
+                    string json = JsonSerializer.Serialize(_items, _jsonOptions);
+                    File.WriteAllText(_filePath, json);
+                }
+                catch (Exception ex)
+                {
+                    throw new RepositoryException(
+                        "An error occurred while saving data to the JSON file.", ex);
+                }
             }
 
             catch (Exception ex)
@@ -61,24 +73,13 @@ namespace CENTRUMMarketing.Core.Repositories
 
             try
             {
-                if (!File.Exists(_filePath))
-                {
-                    List<T> emptyList = new List<T>();
-
-                    string emptyJson = JsonSerializer.Serialize(emptyList, new JsonSerializerOptions
-                    {
-                        WriteIndented = true
-                    });
-
-                    File.WriteAllText(_filePath, emptyJson);
-
-                    return emptyList;
-                }
+                EnsureFileExists();
 
                 string json = File.ReadAllText(_filePath);
 
                 if (string.IsNullOrWhiteSpace(json))
                 {
+                    ResetFileToEmptyArray();
                     return new List<T>();
                 }
 
@@ -86,17 +87,70 @@ namespace CENTRUMMarketing.Core.Repositories
 
                 if (loadedItems == null)
                 {
+                    ResetFileToEmptyArray();
                     return new List<T>();
                 }
 
                 return loadedItems;
 
             }
+            catch (JsonException)
+            {
+                BackupCorruptFile();
+                ResetFileToEmptyArray();
 
+                return new List<T>();
+            }
             catch (Exception ex)
             {
                 throw new RepositoryException(
                     "An error occurred while loading data from the JSON file.", ex);
+
+            }
+        }
+
+        private void EnsureFileExists()
+        {
+            EnsureDirectoryExists();
+
+            if (!File.Exists(_filePath))
+            {
+                File.WriteAllText(_filePath, "[]");
+            }
+        }
+
+        private void ResetFileToEmptyArray()
+        {
+            EnsureDirectoryExists();
+            File.WriteAllText(_filePath, "[]");
+        }
+
+        private void BackupCorruptFile()
+        {
+            try
+            {
+                if (!File.Exists(_filePath))
+                {
+                    return;
+                }
+
+                string backupPath = _filePath + ".backup";
+                File.Copy(_filePath, backupPath, overwrite: true);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException(
+                    "An error occurred while backing up the corrupt JSON file.", ex);
+            }
+        }
+
+        private void EnsureDirectoryExists()
+        {
+            string? directory = Path.GetDirectoryName(_filePath);
+
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
             }
         }
     }

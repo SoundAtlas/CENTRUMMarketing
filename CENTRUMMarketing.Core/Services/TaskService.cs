@@ -48,6 +48,18 @@ namespace CENTRUMMarketing.Core.Services
                     $"Customer with ID {customerId} not found.");
             }
 
+            if (customer.IsArchived())
+            {
+                throw new InvalidOperationException(
+                    $"Cannot add task to archived customer with ID {customerId}.");
+            }
+
+            if (customer == null)
+            {
+                throw new EntityNotFoundException(
+                    $"Customer with ID {customerId} not found.");
+            }
+
             if (deadline < DateTime.Now)
             {
                 throw new InvalidDeadlineException(
@@ -153,7 +165,7 @@ namespace CENTRUMMarketing.Core.Services
         public void DeleteTask(int taskId)
         {
             TaskItem? task = _taskRepository.GetById(taskId);
-            
+
             if (task == null)
 
             {
