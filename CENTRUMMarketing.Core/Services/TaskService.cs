@@ -115,6 +115,21 @@ namespace CENTRUMMarketing.Core.Services
             return results;
         }
 
+        public List<TaskItem> GetTasksByCollaboratorId(int collaboratorId)
+        {
+            List<TaskItem> results = new List<TaskItem>();
+
+            foreach (TaskItem task in _taskRepository.GetAll())
+            {
+                if (task.CollaboratorIds.Contains(collaboratorId))
+                {
+                    results.Add(task);
+                }
+            }
+
+            return results;
+        }
+
         public void DeleteTask(int taskId)
         {
             TaskItem? task = _taskRepository.GetById(taskId);

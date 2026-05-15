@@ -34,7 +34,10 @@ namespace CENTRUMMarketing.App
                 dashboardService,
                 dashboardPrinter);
 
-            SearchMenu searchMenu = new SearchMenu(customerService, taskService);
+            SearchMenu searchMenu = new SearchMenu(
+                customerService,
+                taskService,
+                collaboratorService);
 
             MainMenu mainMenu = new MainMenu(
                 customerMenu,

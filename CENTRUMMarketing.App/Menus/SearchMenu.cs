@@ -7,14 +7,19 @@ namespace CENTRUMMarketing.App.Menus
 {
     public class SearchMenu
     {
+        private readonly CollaboratorService _collaboratorService;
         private readonly CustomerService _customerService;
         private readonly CustomerPrinter _customerPrinter;
         private readonly TaskService _taskService;
 
-        public SearchMenu(CustomerService customerService, TaskService taskService)
+        public SearchMenu(
+            CustomerService customerService,
+            TaskService taskService,
+            CollaboratorService collaboratorService)
         {
             _customerService = customerService;
             _taskService = taskService;
+            _collaboratorService = collaboratorService;
             _customerPrinter = new CustomerPrinter();
         }
 
@@ -25,6 +30,7 @@ namespace CENTRUMMarketing.App.Menus
                 "Search Customer by Name",
                 "Search Customer by Status",
                 "View Tasks by Status",
+                "View Tasks by Collaborator",
                 "View Archived Customers",
                 "Exit"
             };
@@ -50,10 +56,14 @@ namespace CENTRUMMarketing.App.Menus
                         break;
 
                     case 3:
-                        ShowArchivedCustomers();
+                        ShowTasksByCollaborator();
                         break;
 
                     case 4:
+                        ShowArchivedCustomers();
+                        break;
+
+                    case 5:
                     case null:
                         running = false;
                         break;
@@ -188,6 +198,54 @@ namespace CENTRUMMarketing.App.Menus
                 foreach (var task in tasks)
                 {
                     Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline.ToShortDateString()} | Status: {task.Status}");
+                }
+            }
+
+            Pause();
+        }
+
+        private void ShowTasksByCollaborator()
+        {
+            Console.Clear();
+            Console.WriteLine("VIEW TASKS BY COLLABORATOR");
+            Console.WriteLine();
+
+            var collaborators = _collaboratorService.GetAllCollaborators();
+
+            if (collaborators.Count == 0)
+            {
+                Console.WriteLine("No collaborators found.");
+                Pause();
+                return;
+            }
+            string[] collaboratorOptions = new string[collaborators.Count + 1];
+
+            for (int i = 0; i < collaborators.Count; i++)
+            {
+                var collaborator = collaborators[i];
+                collaboratorOptions[i] = $"{collaborator.Name} ({collaborator.Email})";
+            }
+
+            collaboratorOptions[collaboratorOptions.Length - 1] = "Back";
+
+            int? choice = ConsoleHelpers.Navigation("SELECT COLLABORATOR", collaboratorOptions);
+
+            if (choice == null || choice == collaboratorOptions.Length - 1) return;
+
+            var selectedCollaborator = collaborators[choice.Value];
+
+            Console.Clear();
+            Console.WriteLine($"TASKS ASSIGNED TO: {selectedCollaborator.Name}");
+            Console.WriteLine();
+
+            var tasks = _taskService.GetTasksByCollaboratorId(selectedCollaborator.Id);
+
+            if (tasks.Count == 0) Console.WriteLine("No tasks found for this collaborator.");
+            else
+            {
+                foreach (var task in tasks)
+                {
+                    Console.WriteLine($"ID: {task.Id} | Title: {task.Title} | Deadline: {task.Deadline:yyyy/MM/dd} | Status: {task.Status}");
                 }
             }
 
