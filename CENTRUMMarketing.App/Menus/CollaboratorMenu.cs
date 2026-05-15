@@ -1,4 +1,5 @@
-﻿using CENTRUMMarketing.App.UI;
+﻿using CENTRUMMarketing.App.Helpers;
+using CENTRUMMarketing.App.UI;
 using CENTRUMMarketing.Core.Exceptions;
 using CENTRUMMarketing.Core.Models;
 using CENTRUMMarketing.Core.Services;
@@ -62,11 +63,11 @@ namespace CENTRUMMarketing.App.Menus
         {
             ConsoleHelpers.Headers("ADD NEW COLLABORATOR");
 
-            string name = Helpers.InputHelpers.ReadRequiredString("Enter collaborator's name: ");
+            string name = InputHelpers.ReadRequiredString("Enter collaborator's name: ");
 
-            string email = Helpers.InputHelpers.ReadRequiredString("Enter collaborator's email: ");
+            string email = InputHelpers.ReadEmail("Enter collaborator's email: ");
 
-            string phoneNumber = Helpers.InputHelpers.ReadRequiredString("Enter collaborator's phone number: ");
+            string phoneNumber = InputHelpers.ReadPhoneNumber("Enter collaborator's phone number: ");
 
             Collaborator collaborator = _collaboratorService.AddCollaborator(name, email, phoneNumber);
 
@@ -116,7 +117,16 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine("=======================================");
 
-            int collaboratorId = Helpers.InputHelpers.ReadInt("Enter collaborator ID to edit (0 to cancel): ");
+            int collaboratorId = InputHelpers.ReadInt("Enter collaborator ID to edit (0 to cancel): ", 0);
+
+            Collaborator? c = _collaboratorService.GetCollaboratorById(collaboratorId);
+
+            if (c == null)
+            {
+                Console.WriteLine("Collaborator not found.");
+                ConsoleHelpers.Pause();
+                return;
+            }
 
             if (collaboratorId == 0)
             {
@@ -142,7 +152,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("0. Back");
             Console.WriteLine("=======================================");
 
-            int choice = Helpers.InputHelpers.ReadInt("Choose field to edit: ");
+            int choice = InputHelpers.ReadInt("Choose field to edit: ", 0, 3);
 
             string name = collaboratorToEdit.Name;
             string email = collaboratorToEdit.Email;
@@ -151,15 +161,15 @@ namespace CENTRUMMarketing.App.Menus
             switch (choice)
             {
                 case 1:
-                    name = Helpers.InputHelpers.ReadRequiredString("Enter new name: ");
+                    name = InputHelpers.ReadRequiredString("Enter new name: ");
                     break;
 
                 case 2:
-                    email = Helpers.InputHelpers.ReadRequiredString("Enter new email: ");
+                    email = InputHelpers.ReadEmail("Enter new email: ");
                     break;
 
                 case 3:
-                    phone = Helpers.InputHelpers.ReadRequiredString("Enter new phone number: ");
+                    phone = InputHelpers.ReadRequiredString("Enter new phone number: ");
                     break;
 
                 case 0:
@@ -211,7 +221,16 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine("=======================================");
 
-            int collaboratorId = Helpers.InputHelpers.ReadInt("Enter collaborator ID to delete (0 to cancel): ");
+            int collaboratorId = InputHelpers.ReadInt("Enter collaborator ID to delete (0 to cancel): ", 1);
+
+            Collaborator? c = _collaboratorService.GetCollaboratorById(collaboratorId);
+
+            if (c == null)
+            {
+                Console.WriteLine("Collaborator not found.");
+                ConsoleHelpers.Pause();
+                return;
+            }
 
             if (collaboratorId == 0)
             {
@@ -246,7 +265,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("This action cannot be undone.");
             Console.WriteLine();
 
-            string confirmation = Helpers.InputHelpers.ReadRequiredString("Type DELETE to confirm: ");
+            string confirmation = InputHelpers.ReadRequiredString("Type DELETE to confirm: ");
 
             if (!confirmation.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
             {

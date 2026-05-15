@@ -42,6 +42,12 @@ namespace CENTRUMMarketing.Core.Services
         {
             Customer? customer = _customerRepository.GetById(customerId);
 
+            if (customer == null)
+            {
+                throw new EntityNotFoundException(
+                    $"Customer with ID {customerId} not found.");
+            }
+
             if (customer.IsArchived())
             {
                 throw new InvalidOperationException(

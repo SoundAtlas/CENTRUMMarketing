@@ -59,11 +59,11 @@ namespace CENTRUMMarketing.App.Menus
 
             string contactPerson = InputHelpers.ReadRequiredString("Contact person: ");
 
-            string cvr = InputHelpers.ReadRequiredString("CVR: ");
+            string cvr = InputHelpers.ReadCvr("CVR: ");
 
-            string email = InputHelpers.ReadRequiredString("Email: ");
+            string email = InputHelpers.ReadEmail("Email: ");
 
-            string phone = InputHelpers.ReadRequiredString("Phone number: ");
+            string phone = InputHelpers.ReadPhoneNumber("Phone number: ");
 
             // CustomerStatus
             Console.WriteLine("Choose customer status: ");
@@ -71,7 +71,7 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("2. Active");
             Console.WriteLine("3. Dormant");
 
-            int statusChoice = InputHelpers.ReadInt("Choose status: ");
+            int statusChoice = InputHelpers.ReadInt("Choose status: ", 1, 3);
 
             CustomerStatus status = CustomerStatus.Active;
 
@@ -144,7 +144,7 @@ namespace CENTRUMMarketing.App.Menus
 
             Console.WriteLine("=======================================");
 
-            int id = InputHelpers.ReadInt("Enter customer ID to view details (0 to return): ");
+            int id = InputHelpers.ReadInt("Enter customer ID to view details (0 to return): ", 0);
 
             if (id == 0)
             {
@@ -189,22 +189,22 @@ namespace CENTRUMMarketing.App.Menus
                 Console.WriteLine("2. Update Status");
                 Console.WriteLine("3. Toggle Invoicing Ready");
                 Console.WriteLine("4. Delete Customer");
-                Console.WriteLine("0. Back");
+                Console.WriteLine("0. Return to previous menu");
                 Console.WriteLine("=======================================");
 
-                string choice = InputHelpers.ReadRequiredString("Choose an option: ");
+                int choice = InputHelpers.ReadInt("Choose an option: ", 0, 4);
 
                 switch (choice)
                 {
-                    case "1":
+                    case 1:
                         EditCustomerFlow(customer);
                         break;
 
-                    case "2":
+                    case 2:
                         UpdateCustomerStatusFlow(customer);
                         break;
 
-                    case "3":
+                    case 3:
                         customer.InvoicingReady = !customer.InvoicingReady;
                         _customerService.SaveChanges();
 
@@ -213,11 +213,11 @@ namespace CENTRUMMarketing.App.Menus
                         ConsoleHelpers.Pause();
                         break;
 
-                    case "4":
+                    case 4:
                         if (DeleteCustomerFlow(customer)) inDetailsMenu = false;
                         break;
 
-                    case "0":
+                    case 0:
                         inDetailsMenu = false;
                         break;
 
@@ -238,34 +238,34 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("3. CVR");
             Console.WriteLine("4. Email");
             Console.WriteLine("5. Phone");
-            Console.WriteLine("0. Back");
+            Console.WriteLine("0. Cancel");
             Console.WriteLine("=======================================");
 
-            string choice = InputHelpers.ReadRequiredString("Choose field to edit: ");
+            int choice = InputHelpers.ReadInt("Choose field to edit: ", 0, 5);
 
             switch (choice)
             {
-                case "1":
+                case 1:
                     customer.CompanyName = InputHelpers.ReadRequiredString("New company name: ");
                     break;
 
-                case "2":
+                case 2:
                     customer.ContactPerson = InputHelpers.ReadRequiredString("New contact person: ");
                     break;
 
-                case "3":
-                    customer.Cvr = InputHelpers.ReadRequiredString("New CVR: ");
+                case 3:
+                    customer.Cvr = InputHelpers.ReadCvr("New CVR: ");
                     break;
 
-                case "4":
-                    customer.Email = InputHelpers.ReadRequiredString("New email: ");
+                case 4:
+                    customer.Email = InputHelpers.ReadEmail("New email: ");
                     break;
 
-                case "5":
-                    customer.Phone = InputHelpers.ReadRequiredString("New phone number: ");
+                case 5:
+                    customer.Phone = InputHelpers.ReadPhoneNumber("New phone number: ");
                     break;
 
-                case "0":
+                case 0:
                     return;
 
                 default:
@@ -288,10 +288,10 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine("1. Lead");
             Console.WriteLine("2. Active");
             Console.WriteLine("3. Dormant");
-            Console.WriteLine("0. Back");
+            Console.WriteLine("0. Cancel");
             Console.WriteLine("=======================================");
 
-            int choice = InputHelpers.ReadInt("Choose new status: ");
+            int choice = InputHelpers.ReadInt("Choose new status: ", 0, 4);
 
             switch (choice)
             {
