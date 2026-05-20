@@ -155,7 +155,7 @@ namespace CENTRUMMarketing.App.Menus
 
             if (customer != null && !customer.IsArchived())
             {
-                ShowCustomerDetails(customer);
+                ShowCustomerDetailsFlow(customer);
             }
             else
             {

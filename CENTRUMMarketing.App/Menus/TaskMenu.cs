@@ -213,7 +213,7 @@ namespace CENTRUMMarketing.App.Menus
 
             if (task != null)
             {
-                ShowTaskDetails(task);
+                ShowTaskDetailsFlow(task);
             }
 
             else
@@ -287,7 +287,7 @@ namespace CENTRUMMarketing.App.Menus
                 return;
             }
 
-            ShowTaskDetails(selectedTask);
+            ShowTaskDetailsFlow(selectedTask);
 
         }
 
