@@ -292,7 +292,7 @@ namespace CENTRUMMarketing.App.Menus
         }
 
 
-        private void ShowTaskDetails(TaskItem task)
+        private void ShowTaskDetailsFlow(TaskItem task)
         {
             bool inDetailsMenu = true;
 

@@ -167,7 +167,7 @@ namespace CENTRUMMarketing.App.Menus
 
         }
 
-        private void ShowCustomerDetails(Customer customer)
+        private void ShowCustomerDetailsFlow(Customer customer)
         {
 
             bool inDetailsMenu = true;

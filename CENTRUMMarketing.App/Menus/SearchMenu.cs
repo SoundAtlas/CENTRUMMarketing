@@ -92,7 +92,7 @@ namespace CENTRUMMarketing.App.Menus
 
             _customerPrinter.PrintCustomers(matchingCustomers);
 
-            Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void ShowCustomersByStatus()
@@ -110,9 +110,9 @@ namespace CENTRUMMarketing.App.Menus
             };
 
             int? choice = ConsoleHelpers.Navigation("SELECT CUSTOMER STATUS", statusOptions);
-            
+
             if (choice == null || choice == 3) return;
-            
+
             CustomerStatus selectedStatus;
 
             switch (choice)
@@ -138,11 +138,11 @@ namespace CENTRUMMarketing.App.Menus
             Console.WriteLine();
 
             var customers = _customerService.GetCustomersByStatus(selectedStatus);
-            
+
             if (customers.Count == 0) Console.WriteLine("No customers found with this status.");
             else _customerPrinter.PrintCustomers(customers);
 
-            Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void ShowTasksByStatus()
@@ -206,7 +206,7 @@ namespace CENTRUMMarketing.App.Menus
                 }
             }
 
-            Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void ShowTasksByCollaborator()
@@ -220,7 +220,7 @@ namespace CENTRUMMarketing.App.Menus
             if (collaborators.Count == 0)
             {
                 Console.WriteLine("No collaborators found.");
-                Pause();
+                ConsoleHelpers.Pause();
                 return;
             }
             string[] collaboratorOptions = new string[collaborators.Count + 1];
@@ -254,7 +254,7 @@ namespace CENTRUMMarketing.App.Menus
                 }
             }
 
-            Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void ShowTasksWithUpcomingDeadlines()
@@ -306,7 +306,7 @@ namespace CENTRUMMarketing.App.Menus
             {
                 Console.WriteLine("TASKS DUE TODAY");
             }
-            
+
             else
             {
                 Console.WriteLine($"TASKS DUE WITHIN {daysAhead} DAYS");
@@ -317,7 +317,7 @@ namespace CENTRUMMarketing.App.Menus
             var tasks = _taskService.GetTasksWithUpcomingDeadlines(daysAhead);
 
             if (tasks.Count == 0) Console.WriteLine("No upcoming tasks found in this deadline range.");
-            
+
             else
             {
                 foreach (var task in tasks)
@@ -326,7 +326,7 @@ namespace CENTRUMMarketing.App.Menus
                 }
             }
 
-            Pause();
+            ConsoleHelpers.Pause();
         }
 
         private void ShowArchivedCustomers()
@@ -347,13 +347,8 @@ namespace CENTRUMMarketing.App.Menus
                 _customerPrinter.PrintCustomers(archivedCustomers);
             }
 
-            Pause();
+            ConsoleHelpers.Pause();
         }
 
-        private void Pause()
-        {
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
-        }
     }
 }
