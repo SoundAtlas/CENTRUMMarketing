@@ -48,11 +48,7 @@ namespace CENTRUMMarketing.Core.Services
             return _collaboratorRepository.GetById(collaboratorId);
         }
 
-        public void UpdateCollaborator(
-            int collaboratorId,
-            string name,
-            string email,
-            string phone)
+        public void UpdateCollaborator(int collaboratorId, string name, string email, string phone)
         {
             Collaborator? collaborator = _collaboratorRepository.GetById(collaboratorId);
 

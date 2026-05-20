@@ -17,12 +17,12 @@ namespace CENTRUMMarketing.App.UI
 
             foreach (Customer customer in customers)
             {
-                PrintCustomers(customer);
+                PrintCustomer(customer);
                 Console.WriteLine("----------------------------------------");
             }
         }
 
-        public void PrintCustomers(Customer customer)
+        public void PrintCustomer(Customer customer)
         {
             int taskCount = customer.Tasks == null ? 0 : customer.Tasks.Count;
 

@@ -230,11 +230,6 @@ namespace CENTRUMMarketing.Core.Services
             _taskRepository.Save();
         }
 
-        public void SaveChanges()
-        {
-            _taskRepository.Save();
-        }
-
         private void UpdateCustomerLastActivityDate(int customerId)
         {
             Customer? customer = _customerRepository.GetById(customerId);
@@ -248,5 +243,11 @@ namespace CENTRUMMarketing.Core.Services
             customer.LastActivityDate = DateTime.Now;
             _customerRepository.Save();
         }
+
+        public void SaveChanges()
+        {
+            _taskRepository.Save();
+        }
+
     }
 }
