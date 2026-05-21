@@ -67,12 +67,12 @@ Project documentation can be found in the `/docs` folder.
 - Business Model Canvas
 - BPMN
 - Use Case
-- SSD
+- System Sequence Diagram
 
 ## Design
 - Domain Model
 - Design Class Diagram
-- Object Diagram
+- Object Model
 - Sequence Diagram
 - Operation Contract
 
