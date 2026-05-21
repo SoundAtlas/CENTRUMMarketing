@@ -41,20 +41,20 @@ The project was developed using object-oriented programming, layered architectur
 ```text
 CENTRUMMarketing.App
 │
-├── Menus
 ├── Helpers
-├── Printers
+├── Menus
+├── UI
 └── Program.cs
 
 CENTRUMMarketing.Core
 │
-├── Models
-├── Services
-├── Repositories
-├── Interfaces
+├── Data
 ├── Enums
 ├── Exceptions
-└── Data
+├── Interfaces
+├── Models
+├── Repositories
+└── Servies
 ```
 
 ---
@@ -66,15 +66,15 @@ Project documentation can be found in the `/docs` folder.
 ## Analysis
 - Business Model Canvas
 - BPMN
-- Use Cases
-- SSDs
+- Use Case
+- SSD
 
 ## Design
 - Domain Model
 - Design Class Diagram
 - Object Diagram
-- Sequence Diagrams
-- Operation Contracts
+- Sequence Diagram
+- Operation Contract
 
 ---
 
